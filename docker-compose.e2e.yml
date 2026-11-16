@@ -1,0 +1,117 @@
+# Ephemeral end-to-end stack for the HECHO order desk.
+#
+# `pnpm stack:up` builds the web and api images from the SUT checkout and starts
+# them with their own database and object storage on 7200-7204. The project name
+# and every port differ from the development stack (6200-6204) on purpose: the
+# suite truncates this database through POST /api/devtools/reset, so it must never
+# be able to reach development or production data.
+#
+# The web image bakes VITE_API_URL at build time. Changing the web origin means
+# rebuilding the web image (`pnpm stack:up` does that), not just restarting it.
+name: order-desk-e2e
+
+services:
+  web:
+    build:
+      context: ${SUT_DIR:-../order-desk}
+      dockerfile: apps/web/Dockerfile
+      args:
+        # Same-origin on purpose: the web container proxies /api to the API, so
+        # the browser never makes a cross-origin request and CORS stays out of
+        # the picture, exactly as in production.
+        VITE_API_URL: ${E2E_WEB_ORIGIN:-http://127.0.0.1:7200}/api
+    restart: "no"
+    ports:
+      - "127.0.0.1:${WEB_PORT:-7200}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+
+  api:
+    build:
+      context: ${SUT_DIR:-../order-desk}
+      dockerfile: apps/api/Dockerfile
+    restart: "no"
+    environment:
+      PORT: 6201
+      DATABASE_URL: postgresql://order_desk:order_desk_e2e@postgres:5432/order_desk_e2e?schema=public
+      # The browser reaches Better Auth through the web origin, so that origin is
+      # the auth base URL and the only trusted origin. A mismatch shows up as
+      # MISSING_OR_NULL_ORIGIN on the first sign-in, not at startup.
+      BETTER_AUTH_URL: ${E2E_WEB_ORIGIN:-http://127.0.0.1:7200}/api/auth
+      BETTER_AUTH_SECRET: e2e-better-auth-secret-at-least-32-characters
+      FRONTEND_ORIGIN: ${E2E_WEB_ORIGIN:-http://127.0.0.1:7200}
+      TRUST_PROXY: "true"
+      ADMIN_EMAIL: ${E2E_ADMIN_EMAIL:-admin@example.test}
+      ADMIN_PASSWORD: ${E2E_ADMIN_PASSWORD:-e2e-admin-password}
+      DEVTOOLS_ENABLED: "true"
+      DEVTOOLS_API_KEY: ${E2E_DEVTOOLS_API_KEY:-e2e-devtools-key-at-least-32-characters}
+      DEVTOOLS_SEED_PASSWORD: ${E2E_PASSWORD:-e2e-account-password}
+      # The suite signs in and creates accounts from a single address far more
+      # often than a person does; the 429 case, once written, uses the dedicated
+      # password endpoints whose own limit is left alone.
+      AUTH_RATE_LIMIT_MAX: "1000"
+      AUTH_SIGN_IN_RATE_LIMIT_MAX: "1000"
+      ORDER_ATTACHMENT_LIMIT: ${E2E_ATTACHMENT_LIMIT:-20}
+      S3_ENDPOINT: http://seaweedfs:8333
+      S3_ACCESS_KEY: order-desk
+      S3_SECRET_KEY: e2e-s3-password
+      S3_BUCKET: order-files
+    ports:
+      - "127.0.0.1:${API_PORT:-7201}:6201"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      seaweedfs:
+        condition: service_started
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - fetch('http://127.0.0.1:6201/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  postgres:
+    image: postgres:17-alpine
+    restart: "no"
+    environment:
+      POSTGRES_USER: order_desk
+      POSTGRES_PASSWORD: order_desk_e2e
+      POSTGRES_DB: order_desk_e2e
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-7202}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U order_desk -d order_desk_e2e"]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  seaweedfs:
+    image: chrislusf/seaweedfs:4.52
+    command:
+      - mini
+      - -dir=/data
+      - -s3.port=8333
+      - -master.port=9333
+      - -admin.user=admin
+      - -admin.password=e2e-seaweedfs-password
+    restart: "no"
+    environment:
+      AWS_ACCESS_KEY_ID: order-desk
+      AWS_SECRET_ACCESS_KEY: e2e-s3-password
+      S3_BUCKET: order-files
+    ports:
+      - "127.0.0.1:${S3_PORT:-7203}:8333"
+      - "127.0.0.1:${SEAWEEDFS_ADMIN_PORT:-7204}:12535"
+    volumes:
+      - seaweedfs_data:/data
+
+volumes:
+  postgres_data:
+  seaweedfs_data:

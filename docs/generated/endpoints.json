@@ -1,0 +1,497 @@
+{
+  "generatedBy": "scripts/sut/sync-context.mjs",
+  "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
+  "sutRef": "4e156661643e1bd6316799708493f8a317dcadae",
+  "endpoints": [
+    {
+      "method": "GET",
+      "path": "/categories",
+      "handler": "list",
+      "controller": "categories",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,EXECUTOR,ADMIN",
+      "file": "apps/api/src/categories/categories.controller.ts",
+      "line": 36
+    },
+    {
+      "method": "POST",
+      "path": "/categories",
+      "handler": "create",
+      "controller": "categories",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/categories/categories.controller.ts",
+      "line": 56
+    },
+    {
+      "method": "PATCH",
+      "path": "/categories/:id",
+      "handler": "update",
+      "controller": "categories",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/categories/categories.controller.ts",
+      "line": 70
+    },
+    {
+      "method": "PATCH",
+      "path": "/categories/:id/active",
+      "handler": "setActive",
+      "controller": "categories",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/categories/categories.controller.ts",
+      "line": 91
+    },
+    {
+      "method": "POST",
+      "path": "/devtools/reset",
+      "handler": "reset",
+      "controller": "devtools",
+      "requiresDevtoolsKey": true,
+      "access": "devtools-key",
+      "file": "apps/api/src/devtools/devtools.controller.ts",
+      "line": 78
+    },
+    {
+      "method": "DELETE",
+      "path": "/devtools/seed",
+      "handler": "clearSeed",
+      "controller": "devtools",
+      "requiresDevtoolsKey": true,
+      "access": "devtools-key",
+      "file": "apps/api/src/devtools/devtools.controller.ts",
+      "line": 72
+    },
+    {
+      "method": "POST",
+      "path": "/devtools/seed",
+      "handler": "seed",
+      "controller": "devtools",
+      "requiresDevtoolsKey": true,
+      "access": "devtools-key",
+      "file": "apps/api/src/devtools/devtools.controller.ts",
+      "line": 66
+    },
+    {
+      "method": "GET",
+      "path": "/devtools/users",
+      "handler": "listUsers",
+      "controller": "devtools",
+      "requiresDevtoolsKey": true,
+      "access": "devtools-key",
+      "file": "apps/api/src/devtools/devtools.controller.ts",
+      "line": 38
+    },
+    {
+      "method": "POST",
+      "path": "/devtools/users",
+      "handler": "createUser",
+      "controller": "devtools",
+      "requiresDevtoolsKey": true,
+      "access": "devtools-key",
+      "file": "apps/api/src/devtools/devtools.controller.ts",
+      "line": 32
+    },
+    {
+      "method": "PATCH",
+      "path": "/devtools/users/:id",
+      "handler": "updateUser",
+      "controller": "devtools",
+      "requiresDevtoolsKey": true,
+      "access": "devtools-key",
+      "file": "apps/api/src/devtools/devtools.controller.ts",
+      "line": 55
+    },
+    {
+      "method": "GET",
+      "path": "/health",
+      "handler": "getHealth",
+      "controller": "health",
+      "requiresDevtoolsKey": false,
+      "access": "public",
+      "file": "apps/api/src/health/health.controller.ts",
+      "line": 7
+    },
+    {
+      "method": "GET",
+      "path": "/orders",
+      "handler": "list",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,EXECUTOR,ADMIN",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 50
+    },
+    {
+      "method": "POST",
+      "path": "/orders",
+      "handler": "create",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 65
+    },
+    {
+      "method": "GET",
+      "path": "/orders/:id",
+      "handler": "get",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,EXECUTOR,ADMIN",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 57
+    },
+    {
+      "method": "PATCH",
+      "path": "/orders/:id",
+      "handler": "updateDraft",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 72
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/accept",
+      "handler": "acceptWork",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 178
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/assign",
+      "handler": "assign",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 218
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/cancel",
+      "handler": "cancel",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,ADMIN",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 198
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/claim",
+      "handler": "claim",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:EXECUTOR",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 92
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/comments",
+      "handler": "addComment",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,EXECUTOR,ADMIN",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 186
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/complete",
+      "handler": "complete",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 210
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/decline",
+      "handler": "decline",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:EXECUTOR",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 100
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/estimate",
+      "handler": "proposeEstimate",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:EXECUTOR",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 112
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/estimates/:estimateId/respond",
+      "handler": "respondToEstimate",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 124
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/request-revision",
+      "handler": "requestRevision",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 158
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/resume-revisions",
+      "handler": "resumeRevisions",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:EXECUTOR",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 170
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/submit",
+      "handler": "submit",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 84
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/submit-review",
+      "handler": "submitForReview",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:EXECUTOR",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 150
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/time",
+      "handler": "saveWorkTime",
+      "controller": "orders",
+      "requiresDevtoolsKey": false,
+      "access": "roles:EXECUTOR",
+      "file": "apps/api/src/orders/orders.controller.ts",
+      "line": 138
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:orderId/attachments",
+      "handler": "upload",
+      "controller": "orders/:orderId/attachments",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,EXECUTOR,ADMIN",
+      "file": "apps/api/src/orders/order-files.controller.ts",
+      "line": 47
+    },
+    {
+      "method": "GET",
+      "path": "/orders/:orderId/attachments/:attachmentId",
+      "handler": "download",
+      "controller": "orders/:orderId/attachments",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,EXECUTOR,ADMIN",
+      "file": "apps/api/src/orders/order-files.controller.ts",
+      "line": 82
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:orderId/invoices",
+      "handler": "issue",
+      "controller": "orders/:orderId/invoices",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/invoices/invoices.controller.ts",
+      "line": 59
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:orderId/invoices/:invoiceId/payment-reports",
+      "handler": "reportPayment",
+      "controller": "orders/:orderId/invoices",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER",
+      "file": "apps/api/src/invoices/invoices.controller.ts",
+      "line": 67
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:orderId/invoices/:invoiceId/payment-reports/:reportId/confirm",
+      "handler": "confirmPaymentReport",
+      "controller": "orders/:orderId/invoices",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/invoices/invoices.controller.ts",
+      "line": 121
+    },
+    {
+      "method": "GET",
+      "path": "/orders/:orderId/invoices/:invoiceId/payment-reports/:reportId/file",
+      "handler": "paymentReportFile",
+      "controller": "orders/:orderId/invoices",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,ADMIN",
+      "file": "apps/api/src/invoices/invoices.controller.ts",
+      "line": 101
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:orderId/invoices/:invoiceId/payment-reports/:reportId/reject",
+      "handler": "rejectPaymentReport",
+      "controller": "orders/:orderId/invoices",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/invoices/invoices.controller.ts",
+      "line": 136
+    },
+    {
+      "method": "GET",
+      "path": "/orders/:orderId/invoices/:invoiceId/pdf",
+      "handler": "pdf",
+      "controller": "orders/:orderId/invoices",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,EXECUTOR,ADMIN",
+      "file": "apps/api/src/invoices/invoices.controller.ts",
+      "line": 166
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:orderId/invoices/:invoiceId/void",
+      "handler": "void",
+      "controller": "orders/:orderId/invoices",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/invoices/invoices.controller.ts",
+      "line": 152
+    },
+    {
+      "method": "PATCH",
+      "path": "/users/:id/active",
+      "handler": "setActive",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 132
+    },
+    {
+      "method": "POST",
+      "path": "/users/:id/reset-password",
+      "handler": "resetEndUserPassword",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 125
+    },
+    {
+      "method": "GET",
+      "path": "/users/customers",
+      "handler": "listCustomers",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 96
+    },
+    {
+      "method": "GET",
+      "path": "/users/executors",
+      "handler": "listExecutors",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 87
+    },
+    {
+      "method": "POST",
+      "path": "/users/executors",
+      "handler": "createExecutor",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 105
+    },
+    {
+      "method": "PATCH",
+      "path": "/users/executors/:id",
+      "handler": "updateExecutor",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 111
+    },
+    {
+      "method": "POST",
+      "path": "/users/executors/:id/reset-password",
+      "handler": "resetPassword",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 118
+    },
+    {
+      "method": "GET",
+      "path": "/users/executors/available",
+      "handler": "listAvailableExecutors",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 80
+    },
+    {
+      "method": "GET",
+      "path": "/users/me",
+      "handler": "getOwnProfile",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,EXECUTOR,ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 53
+    },
+    {
+      "method": "PATCH",
+      "path": "/users/me/hourly-rate",
+      "handler": "updateOwnHourlyRate",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:EXECUTOR",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 70
+    },
+    {
+      "method": "PATCH",
+      "path": "/users/me/profile",
+      "handler": "updateOwnProfile",
+      "controller": "users",
+      "requiresDevtoolsKey": false,
+      "access": "roles:CUSTOMER,EXECUTOR,ADMIN",
+      "file": "apps/api/src/users/users.controller.ts",
+      "line": 60
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "generatedBy": "scripts/sut/sync-context.mjs",
+  "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
+  "sutRef": "4e156661643e1bd6316799708493f8a317dcadae",
+  "routes": [
+    {
+      "path": "/",
+      "element": "LandingPage",
+      "line": 83
+    },
+    {
+      "path": "/login",
+      "element": "AuthPage",
+      "line": 84
+    },
+    {
+      "path": "/register",
+      "element": "AuthPage",
+      "line": 85
+    },
+    {
+      "path": "/customer/*",
+      "element": "PanelRoute",
+      "line": 86
+    },
+    {
+      "path": "/executor/*",
+      "element": "PanelRoute",
+      "line": 87
+    },
+    {
+      "path": "/admin/*",
+      "element": "PanelRoute",
+      "line": 88
+    },
+    {
+      "path": "*",
+      "element": "NotFoundPage",
+      "line": 89
+    }
+  ],
+  "panelPaths": {
+    "CUSTOMER": "/customer",
+    "EXECUTOR": "/executor",
+    "ADMIN": "/admin"
+  }
+}

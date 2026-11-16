@@ -1,0 +1,48 @@
+{
+  "generatedBy": "scripts/sut/sync-context.mjs",
+  "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
+  "sutRef": "4e156661643e1bd6316799708493f8a317dcadae",
+  "sutDir": "../order-desk",
+  "inputsHash": "17c680f24adaa64992955d2cf74406020f9ea0448452571451e9157665e23dbc",
+  "inputFiles": [
+    "README.en.md",
+    "apps/api/prisma/schema.prisma",
+    "apps/api/src/categories/categories.controller.ts",
+    "apps/api/src/devtools/devtools.controller.ts",
+    "apps/api/src/health/health.controller.ts",
+    "apps/api/src/invoices/invoices.controller.ts",
+    "apps/api/src/orders/order-files.controller.ts",
+    "apps/api/src/orders/orders.controller.ts",
+    "apps/api/src/users/users.controller.ts",
+    "apps/web/src/admin-pages.tsx",
+    "apps/web/src/api.ts",
+    "apps/web/src/app.tsx",
+    "apps/web/src/auth-client.ts",
+    "apps/web/src/i18n/index.tsx",
+    "apps/web/src/i18n/messages/en.ts",
+    "apps/web/src/i18n/messages/es.ts",
+    "apps/web/src/i18n/messages/ru.ts",
+    "apps/web/src/language-switcher.tsx",
+    "apps/web/src/main.tsx",
+    "apps/web/src/motion/sheet.ts",
+    "apps/web/src/motion/spring.ts",
+    "apps/web/src/order-detail.tsx",
+    "apps/web/src/order-list-controls.tsx",
+    "apps/web/src/role-order-panels.tsx",
+    "apps/web/src/toast.tsx",
+    "docs/en/README.md",
+    "docs/en/database-schema.md",
+    "docs/en/qase.md"
+  ],
+  "counts": {
+    "testIds": {
+      "literal": 125,
+      "template": 72,
+      "expression": 3
+    },
+    "routes": 7,
+    "endpoints": 49,
+    "enums": 6,
+    "documents": 4
+  }
+}

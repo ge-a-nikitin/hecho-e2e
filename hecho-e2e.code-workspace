@@ -1,0 +1,26 @@
+{
+  "folders": [
+    {
+      "name": "hecho-e2e",
+      "path": "."
+    },
+    {
+      "name": "order-desk (SUT, read-only)",
+      "path": "../order-desk"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/test-results": true,
+      "**/playwright-report": true,
+      "**/.auth": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/test-results": true,
+      "**/playwright-report": true
+    },
+    "editor.formatOnSave": false
+  }
+}

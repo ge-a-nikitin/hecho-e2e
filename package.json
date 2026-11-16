@@ -1,0 +1,44 @@
+{
+  "name": "hecho-e2e",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Playwright end-to-end suite for the HECHO order desk (the SUT lives in a separate repository).",
+  "packageManager": "pnpm@12.15.0",
+  "engines": {
+    "node": ">=22.18.0",
+    "pnpm": ">=10"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "e2e": "playwright test",
+    "e2e:smoke": "playwright test --grep @smoke",
+    "e2e:ui": "playwright test --ui",
+    "e2e:list": "playwright test --list",
+    "report": "playwright show-report",
+    "stack:up": "node scripts/stack.mjs up",
+    "stack:down": "node scripts/stack.mjs down",
+    "stack:reset": "node scripts/stack.mjs reset",
+    "stack:status": "node scripts/stack.mjs status",
+    "stack:logs": "node scripts/stack.mjs logs",
+    "sut:status": "node scripts/sut/sync-context.mjs status",
+    "sut:sync": "node scripts/sut/sync-context.mjs sync",
+    "sut:check": "node scripts/sut/sync-context.mjs check",
+    "qase:check": "tsx scripts/qase/check-catalogue.ts",
+    "qase:sync": "tsx scripts/qase/sync-cases.ts",
+    "qase:sync:dry": "tsx scripts/qase/sync-cases.ts --dry-run"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^22.18.0",
+    "dotenv": "^18.0.10",
+    "eslint": "^10.15.0",
+    "eslint-plugin-playwright": "^2.12.2",
+    "playwright-qase-reporter": "^2.8.1",
+    "tsx": "^4.23.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.72.2"
+  }
+}

@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Local configuration and credentials
+.env.e2e
+.env
+
+# Playwright artefacts
+.auth/
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# A local checkout of the system under test (CI checks the SUT out here)
+/sut/
+
+# Editor and OS noise
+.DS_Store
+*.log
+
+# Local agent configuration: rules and skills for the agent working in this
+# checkout. They are not part of the suite and are not reviewed in pull requests;
+# the tracked contract for humans is docs/conventions.md.
+AGENTS.md
+.cline/
+.agents/
+
+# Draft cases produced by the case-generation skill, before they become a spec
+test-cases-draft/

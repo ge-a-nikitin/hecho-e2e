@@ -1,0 +1,1012 @@
+{
+  "generatedBy": "scripts/sut/sync-context.mjs",
+  "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
+  "sutRef": "4e156661643e1bd6316799708493f8a317dcadae",
+  "counts": {
+    "literal": 125,
+    "template": 72,
+    "expression": 3
+  },
+  "ids": [
+    {
+      "pattern": "${kind}-user-row-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 417
+    },
+    {
+      "pattern": "${role.toLowerCase()}-panel",
+      "file": "apps/web/src/app.tsx",
+      "line": 393
+    },
+    {
+      "pattern": "accept-estimate-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1254
+    },
+    {
+      "pattern": "accept-work-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1302
+    },
+    {
+      "testId": "admin-categories",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 105
+    },
+    {
+      "testId": "admin-orders",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 416
+    },
+    {
+      "testId": "admin-orders-empty",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 438
+    },
+    {
+      "testId": "admin-orders-list",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 459
+    },
+    {
+      "testId": "admin-orders-loading",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 436
+    },
+    {
+      "testId": "admin-orders-no-results",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 444
+    },
+    {
+      "testId": "admin-orders-reset-filters",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 452
+    },
+    {
+      "testId": "admin-refresh",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 419
+    },
+    {
+      "testId": "admin-users",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 557
+    },
+    {
+      "testId": "app-toast",
+      "file": "apps/web/src/toast.tsx",
+      "line": 76
+    },
+    {
+      "pattern": "assign-executor-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 501
+    },
+    {
+      "testId": "attachment-upload-form",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 474
+    },
+    {
+      "testId": "audience-register",
+      "file": "apps/web/src/app.tsx",
+      "line": 189
+    },
+    {
+      "testId": "auth-back",
+      "file": "apps/web/src/app.tsx",
+      "line": 288
+    },
+    {
+      "testId": "auth-brand",
+      "file": "apps/web/src/app.tsx",
+      "line": 286
+    },
+    {
+      "testId": "auth-email",
+      "file": "apps/web/src/app.tsx",
+      "line": 301
+    },
+    {
+      "testId": "auth-form",
+      "file": "apps/web/src/app.tsx",
+      "line": 292
+    },
+    {
+      "testId": "auth-loading",
+      "file": "apps/web/src/app.tsx",
+      "line": 1401
+    },
+    {
+      "testId": "auth-name",
+      "file": "apps/web/src/app.tsx",
+      "line": 296
+    },
+    {
+      "testId": "auth-password",
+      "file": "apps/web/src/app.tsx",
+      "line": 305
+    },
+    {
+      "testId": "auth-submit",
+      "file": "apps/web/src/app.tsx",
+      "line": 307
+    },
+    {
+      "testId": "auth-switch",
+      "file": "apps/web/src/app.tsx",
+      "line": 313
+    },
+    {
+      "testId": "brand-home",
+      "file": "apps/web/src/app.tsx",
+      "line": 104
+    },
+    {
+      "pattern": "cancel-category-rename-${category.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 233
+    },
+    {
+      "testId": "cancel-create-order",
+      "file": "apps/web/src/app.tsx",
+      "line": 1031
+    },
+    {
+      "pattern": "cancel-edit-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1201
+    },
+    {
+      "pattern": "cancel-executor-name-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 469
+    },
+    {
+      "testId": "cancel-order-form",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 561
+    },
+    {
+      "testId": "cancel-order-reason",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 569
+    },
+    {
+      "testId": "cancel-order-submit",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 572
+    },
+    {
+      "pattern": "cancel-user-password-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 504
+    },
+    {
+      "testId": "categories-empty",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 175
+    },
+    {
+      "testId": "categories-list",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 181
+    },
+    {
+      "testId": "categories-load-error",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 164
+    },
+    {
+      "testId": "categories-loading",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 171
+    },
+    {
+      "pattern": "category-active-toggle-${category.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 256
+    },
+    {
+      "pattern": "category-edit-name-${category.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 199
+    },
+    {
+      "pattern": "category-inactive-${category.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 205
+    },
+    {
+      "testId": "category-name-input",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 136
+    },
+    {
+      "pattern": "category-row-${category.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 189
+    },
+    {
+      "testId": "category-show-inactive",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 156
+    },
+    {
+      "testId": "change-password",
+      "file": "apps/web/src/app.tsx",
+      "line": 683
+    },
+    {
+      "pattern": "claim-order-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 190
+    },
+    {
+      "testId": "close-order-detail",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 274
+    },
+    {
+      "pattern": "complete-order-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 599
+    },
+    {
+      "pattern": "complete-order-section-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 588
+    },
+    {
+      "pattern": "confirm-payment-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 633
+    },
+    {
+      "testId": "create-category",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 143
+    },
+    {
+      "testId": "create-category-form",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 122
+    },
+    {
+      "testId": "create-order",
+      "file": "apps/web/src/app.tsx",
+      "line": 938
+    },
+    {
+      "testId": "create-order-form",
+      "file": "apps/web/src/app.tsx",
+      "line": 945
+    },
+    {
+      "testId": "create-user-executor",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 567
+    },
+    {
+      "testId": "create-user-executor-form",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 574
+    },
+    {
+      "testId": "customers-list",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 633
+    },
+    {
+      "pattern": "decline-order-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 254
+    },
+    {
+      "pattern": "download-invoice-pdf-${invoice.id}",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 504
+    },
+    {
+      "pattern": "download-invoice-pdf-${invoice.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 542
+    },
+    {
+      "pattern": "download-order-attachment-${attachment.id}",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 464
+    },
+    {
+      "pattern": "download-payment-receipt-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 617
+    },
+    {
+      "pattern": "download-rejected-payment-receipt-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 677
+    },
+    {
+      "pattern": "draft-actions-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1216
+    },
+    {
+      "pattern": "edit-category-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1157
+    },
+    {
+      "pattern": "edit-description-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1147
+    },
+    {
+      "pattern": "edit-due-date-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1170
+    },
+    {
+      "pattern": "edit-executor-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1179
+    },
+    {
+      "pattern": "edit-executor-name-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 521
+    },
+    {
+      "pattern": "edit-location-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1193
+    },
+    {
+      "pattern": "edit-order-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1221
+    },
+    {
+      "pattern": "edit-order-form-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1124
+    },
+    {
+      "pattern": "edit-title-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1136
+    },
+    {
+      "pattern": "estimate-hours-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 233
+    },
+    {
+      "pattern": "estimate-reject-comment-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1278
+    },
+    {
+      "pattern": "estimate-response-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1242
+    },
+    {
+      "pattern": "executor-name-input-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 427
+    },
+    {
+      "testId": "executor-orders",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 137
+    },
+    {
+      "testId": "executor-orders-loading",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 147
+    },
+    {
+      "testId": "executor-orders-no-results",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 159
+    },
+    {
+      "testId": "executor-orders-reset-filters",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 167
+    },
+    {
+      "testId": "executor-rate-card",
+      "file": "apps/web/src/app.tsx",
+      "line": 626
+    },
+    {
+      "testId": "executor-refresh",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 140
+    },
+    {
+      "testId": "executors-list",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 625
+    },
+    {
+      "testId": "footer-brand",
+      "file": "apps/web/src/app.tsx",
+      "line": 200
+    },
+    {
+      "testId": "footer-login",
+      "file": "apps/web/src/app.tsx",
+      "line": 202
+    },
+    {
+      "testId": "hero-login",
+      "file": "apps/web/src/app.tsx",
+      "line": 135
+    },
+    {
+      "testId": "hero-register",
+      "file": "apps/web/src/app.tsx",
+      "line": 132
+    },
+    {
+      "testId": "hourly-rate-form",
+      "file": "apps/web/src/app.tsx",
+      "line": 634
+    },
+    {
+      "pattern": "invoice-payment-${invoice.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1339
+    },
+    {
+      "pattern": "issue-invoice-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 526
+    },
+    {
+      "testId": "landing-page",
+      "file": "apps/web/src/app.tsx",
+      "line": 102
+    },
+    {
+      "pattern": "language-${option}",
+      "file": "apps/web/src/language-switcher.tsx",
+      "line": 21
+    },
+    {
+      "testId": "language-switcher",
+      "file": "apps/web/src/language-switcher.tsx",
+      "line": 11
+    },
+    {
+      "testId": "login-page",
+      "file": "apps/web/src/app.tsx",
+      "line": 284
+    },
+    {
+      "testId": "mobile-sign-out",
+      "file": "apps/web/src/app.tsx",
+      "line": 425
+    },
+    {
+      "testId": "nav-dashboard",
+      "file": "apps/web/src/app.tsx",
+      "line": 113
+    },
+    {
+      "testId": "nav-for-whom",
+      "file": "apps/web/src/app.tsx",
+      "line": 111
+    },
+    {
+      "testId": "nav-how-it-works",
+      "file": "apps/web/src/app.tsx",
+      "line": 110
+    },
+    {
+      "testId": "nav-login",
+      "file": "apps/web/src/app.tsx",
+      "line": 117
+    },
+    {
+      "testId": "new-executor-email",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 585
+    },
+    {
+      "testId": "new-executor-name",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 582
+    },
+    {
+      "testId": "new-executor-password",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 588
+    },
+    {
+      "pattern": "new-password-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 485
+    },
+    {
+      "testId": "no-categories",
+      "file": "apps/web/src/app.tsx",
+      "line": 1028
+    },
+    {
+      "testId": "not-found-home",
+      "file": "apps/web/src/app.tsx",
+      "line": 1412
+    },
+    {
+      "testId": "not-found-page",
+      "file": "apps/web/src/app.tsx",
+      "line": 1407
+    },
+    {
+      "pattern": "open-order-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1112
+    },
+    {
+      "pattern": "open-order-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 762
+    },
+    {
+      "testId": "order-attachment-file",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 477
+    },
+    {
+      "pattern": "order-card-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1099
+    },
+    {
+      "testId": "order-category",
+      "file": "apps/web/src/app.tsx",
+      "line": 980
+    },
+    {
+      "testId": "order-category-filter",
+      "file": "apps/web/src/order-list-controls.tsx",
+      "line": 116
+    },
+    {
+      "testId": "order-comment-form",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 542
+    },
+    {
+      "testId": "order-comment-input",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 551
+    },
+    {
+      "testId": "order-description",
+      "file": "apps/web/src/app.tsx",
+      "line": 969
+    },
+    {
+      "testId": "order-detail",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 266
+    },
+    {
+      "testId": "order-detail-backdrop",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 257
+    },
+    {
+      "testId": "order-due-date",
+      "file": "apps/web/src/app.tsx",
+      "line": 996
+    },
+    {
+      "testId": "order-executor",
+      "file": "apps/web/src/app.tsx",
+      "line": 1005
+    },
+    {
+      "testId": "order-filters",
+      "file": "apps/web/src/order-list-controls.tsx",
+      "line": 83
+    },
+    {
+      "testId": "order-filters-reset",
+      "file": "apps/web/src/order-list-controls.tsx",
+      "line": 130
+    },
+    {
+      "testId": "order-location",
+      "file": "apps/web/src/app.tsx",
+      "line": 1019
+    },
+    {
+      "testId": "order-search",
+      "file": "apps/web/src/order-list-controls.tsx",
+      "line": 93
+    },
+    {
+      "testId": "order-status-filter",
+      "file": "apps/web/src/order-list-controls.tsx",
+      "line": 102
+    },
+    {
+      "testId": "order-title",
+      "file": "apps/web/src/app.tsx",
+      "line": 958
+    },
+    {
+      "testId": "orders-empty-state",
+      "file": "apps/web/src/app.tsx",
+      "line": 1074
+    },
+    {
+      "testId": "orders-list",
+      "file": "apps/web/src/app.tsx",
+      "line": 1095
+    },
+    {
+      "testId": "orders-load-error",
+      "file": "apps/web/src/app.tsx",
+      "line": 1066
+    },
+    {
+      "testId": "orders-loading",
+      "file": "apps/web/src/app.tsx",
+      "line": 1072
+    },
+    {
+      "testId": "orders-next-page",
+      "file": "apps/web/src/order-list-controls.tsx",
+      "line": 176
+    },
+    {
+      "testId": "orders-no-results",
+      "file": "apps/web/src/app.tsx",
+      "line": 1080
+    },
+    {
+      "testId": "orders-page-summary",
+      "file": "apps/web/src/order-list-controls.tsx",
+      "line": 168
+    },
+    {
+      "testId": "orders-pagination",
+      "file": "apps/web/src/order-list-controls.tsx",
+      "line": 158
+    },
+    {
+      "testId": "orders-prev-page",
+      "file": "apps/web/src/order-list-controls.tsx",
+      "line": 164
+    },
+    {
+      "testId": "orders-reset-filters",
+      "file": "apps/web/src/app.tsx",
+      "line": 1088
+    },
+    {
+      "testId": "panel-brand",
+      "file": "apps/web/src/app.tsx",
+      "line": 395
+    },
+    {
+      "testId": "panel-categories-link",
+      "file": "apps/web/src/app.tsx",
+      "line": 400
+    },
+    {
+      "testId": "panel-orders-link",
+      "file": "apps/web/src/app.tsx",
+      "line": 398
+    },
+    {
+      "testId": "panel-profile-link",
+      "file": "apps/web/src/app.tsx",
+      "line": 405
+    },
+    {
+      "testId": "panel-users-link",
+      "file": "apps/web/src/app.tsx",
+      "line": 403
+    },
+    {
+      "testId": "password-change-form",
+      "file": "apps/web/src/app.tsx",
+      "line": 670
+    },
+    {
+      "testId": "password-confirm",
+      "file": "apps/web/src/app.tsx",
+      "line": 681
+    },
+    {
+      "testId": "password-current",
+      "file": "apps/web/src/app.tsx",
+      "line": 673
+    },
+    {
+      "testId": "password-new",
+      "file": "apps/web/src/app.tsx",
+      "line": 677
+    },
+    {
+      "pattern": "payment-receipt-${invoice.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1365
+    },
+    {
+      "pattern": "payment-review-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 606
+    },
+    {
+      "pattern": "process-step-${number}",
+      "file": "apps/web/src/app.tsx",
+      "line": 211
+    },
+    {
+      "testId": "profile-current-password",
+      "file": "apps/web/src/app.tsx",
+      "line": 617
+    },
+    {
+      "testId": "profile-email",
+      "file": "apps/web/src/app.tsx",
+      "line": 613
+    },
+    {
+      "testId": "profile-form",
+      "file": "apps/web/src/app.tsx",
+      "line": 606
+    },
+    {
+      "testId": "profile-hourly-rate",
+      "file": "apps/web/src/app.tsx",
+      "line": 647
+    },
+    {
+      "testId": "profile-name",
+      "file": "apps/web/src/app.tsx",
+      "line": 609
+    },
+    {
+      "testId": "profile-page",
+      "file": "apps/web/src/app.tsx",
+      "line": 597
+    },
+    {
+      "testId": "profile-role",
+      "file": "apps/web/src/app.tsx",
+      "line": 688
+    },
+    {
+      "testId": "refresh-categories",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 116
+    },
+    {
+      "testId": "refresh-users",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 564
+    },
+    {
+      "testId": "register-page",
+      "file": "apps/web/src/app.tsx",
+      "line": 284
+    },
+    {
+      "pattern": "reject-estimate-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1285
+    },
+    {
+      "pattern": "reject-payment-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 663
+    },
+    {
+      "pattern": "reject-payment-reason-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 660
+    },
+    {
+      "pattern": "rename-category-${category.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 247
+    },
+    {
+      "pattern": "report-payment-${invoice.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1372
+    },
+    {
+      "pattern": "request-revision-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1329
+    },
+    {
+      "pattern": "reset-user-password-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 536
+    },
+    {
+      "pattern": "resume-revisions-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 315
+    },
+    {
+      "testId": "retry-categories",
+      "file": "apps/web/src/app.tsx",
+      "line": 1023
+    },
+    {
+      "testId": "retry-orders",
+      "file": "apps/web/src/app.tsx",
+      "line": 1067
+    },
+    {
+      "pattern": "review-response-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1293
+    },
+    {
+      "pattern": "revision-comment-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1326
+    },
+    {
+      "pattern": "save-category-${category.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 221
+    },
+    {
+      "testId": "save-draft",
+      "file": "apps/web/src/app.tsx",
+      "line": 1039
+    },
+    {
+      "pattern": "save-draft-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1209
+    },
+    {
+      "pattern": "save-executor-name-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 457
+    },
+    {
+      "testId": "save-hourly-rate",
+      "file": "apps/web/src/app.tsx",
+      "line": 655
+    },
+    {
+      "testId": "save-profile",
+      "file": "apps/web/src/app.tsx",
+      "line": 620
+    },
+    {
+      "pattern": "save-user-password-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 492
+    },
+    {
+      "pattern": "save-work-time-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 286
+    },
+    {
+      "testId": "sign-out",
+      "file": "apps/web/src/app.tsx",
+      "line": 409
+    },
+    {
+      "pattern": "submit-assignment-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 511
+    },
+    {
+      "testId": "submit-create-order",
+      "file": "apps/web/src/app.tsx",
+      "line": 1048
+    },
+    {
+      "pattern": "submit-draft-${order.id}",
+      "file": "apps/web/src/app.tsx",
+      "line": 1230
+    },
+    {
+      "pattern": "submit-estimate-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 236
+    },
+    {
+      "testId": "submit-new-executor",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 592
+    },
+    {
+      "testId": "submit-order-comment",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 554
+    },
+    {
+      "pattern": "submit-review-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 299
+    },
+    {
+      "expression": "testId",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 722
+    },
+    {
+      "expression": "testId",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 747
+    },
+    {
+      "expression": "testId",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 784
+    },
+    {
+      "pattern": "toggle-user-active-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 545
+    },
+    {
+      "testId": "upload-order-attachment",
+      "file": "apps/web/src/order-detail.tsx",
+      "line": 479
+    },
+    {
+      "pattern": "user-inactive-${user.id}",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 433
+    },
+    {
+      "testId": "users-load-error",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 613
+    },
+    {
+      "testId": "users-loading",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 620
+    },
+    {
+      "testId": "users-show-inactive",
+      "file": "apps/web/src/admin-pages.tsx",
+      "line": 605
+    },
+    {
+      "pattern": "void-invoice-${invoice.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 577
+    },
+    {
+      "pattern": "void-invoice-reason-${invoice.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 570
+    },
+    {
+      "pattern": "work-time-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 273
+    },
+    {
+      "pattern": "work-time-comment-${order.id}",
+      "file": "apps/web/src/role-order-panels.tsx",
+      "line": 283
+    }
+  ]
+}

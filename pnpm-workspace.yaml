@@ -1,0 +1,6 @@
+# pnpm settings for this single-package repository.
+#
+# `tsx` runs the Qase scripts and depends on esbuild, whose install script must
+# be allowed explicitly; pnpm writes the prompt into this file on first install.
+allowBuilds:
+  esbuild: true

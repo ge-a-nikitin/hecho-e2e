@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
+  "ref": "4e156661643e1bd6316799708493f8a317dcadae",
+  "localDir": "../order-desk",
+  "generatedAt": "2026-11-15",
+  "updatePolicy": "Bump `ref` in its own pull request: read the SUT changes, run `pnpm sut:sync`, review the regenerated docs/generated artefacts, and commit them with the bump. Never edit an artefact by hand."
+}

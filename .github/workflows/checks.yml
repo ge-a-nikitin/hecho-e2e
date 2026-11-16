@@ -1,0 +1,91 @@
+name: Checks
+
+# Pull-request gate: static checks, the SUT context snapshot, and the full suite
+# against a stack built from the pinned SUT commit. No Qase token is available
+# here, so the run stays offline; publishing happens from `main` in qase.yml.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  suite:
+    name: Lint, context and suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      CI: "true"
+      # The SUT is checked out inside the workspace; the compose build context
+      # and the context generator both follow SUT_DIR.
+      SUT_DIR: sut/order-desk
+      # The stack is started explicitly below, so the suite must not manage it.
+      E2E_STACK: attach
+      QASE_MODE: "off"
+    steps:
+      - name: Check out the suite
+        uses: actions/checkout@v4
+
+      - name: Read the pinned SUT commit
+        id: sut
+        run: echo "ref=$(node -p "require('./sut.lock.json').ref")" >> "$GITHUB_OUTPUT"
+
+      - name: Check out the SUT at the pinned commit
+        uses: actions/checkout@v4
+        with:
+          repository: ge-a-nikitin/hecho-demo
+          ref: ${{ steps.sut.outputs.ref }}
+          path: sut/order-desk
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Check the Qase catalogue against the specs
+        run: pnpm qase:check
+
+      - name: Check the generated SUT context
+        run: pnpm sut:check
+
+      - name: Start the e2e stack
+        run: pnpm stack:up
+
+      - name: Run the suite
+        run: pnpm e2e
+
+      - name: Stop the e2e stack
+        if: always()
+        run: pnpm stack:down
+
+      - name: Upload the Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7

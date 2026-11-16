@@ -1,0 +1,82 @@
+name: Qase
+
+# Runs after a merge into `main`: publishes the suite's results to TestOps and
+# fails when the catalogue in the repository has drifted from the cases there.
+# The token lives in the `production` environment and never reaches a pull
+# request, which is why checks.yml keeps QASE_MODE=off.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: qase-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish a TestOps run
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment: production
+    env:
+      CI: "true"
+      SUT_DIR: sut/order-desk
+      E2E_STACK: attach
+      QASE_MODE: testops
+      QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TESTOPS_API_TOKEN }}
+    steps:
+      - name: Check out the suite
+        uses: actions/checkout@v4
+
+      - name: Read the pinned SUT commit
+        id: sut
+        run: echo "ref=$(node -p "require('./sut.lock.json').ref")" >> "$GITHUB_OUTPUT"
+
+      - name: Check out the SUT at the pinned commit
+        uses: actions/checkout@v4
+        with:
+          repository: ge-a-nikitin/hecho-demo
+          ref: ${{ steps.sut.outputs.ref }}
+          path: sut/order-desk
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Fail when TestOps and the catalogue disagree
+        run: pnpm qase:sync:dry
+
+      - name: Start the e2e stack
+        run: pnpm stack:up
+
+      - name: Run the suite and report it
+        run: pnpm e2e
+
+      - name: Stop the e2e stack
+        if: always()
+        run: pnpm stack:down
+
+      - name: Upload the Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-main
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7
