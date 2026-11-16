@@ -29,6 +29,9 @@ Hand-written pages explain intent. Facts that can drift mechanically are generat
 | `docs-index.json`        | SUT documentation files with title, size and hash             |
 | `context.json`           | which commit and which input files produced the snapshot      |
 
+`context.json` records the pinned commit, never a path into the working copy, so `sut:check` compares
+the same snapshot whether the SUT sits at `../order-desk` or, as in CI, at `sut/order-desk`.
+
 ```bash
 pnpm sut:status   # checkout, commit, drift, snapshot freshness
 pnpm sut:sync     # regenerate after the SUT moves
