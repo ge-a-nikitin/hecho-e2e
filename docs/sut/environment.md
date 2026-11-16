@@ -90,6 +90,23 @@ be compared with the images, which `status` says out loud instead of rebuilding 
 See [0002](../decisions/0002-build-provenance.md) for why the stamp lives on the image rather than in
 a local file.
 
+## Continuous integration
+
+CI runs the same stack with `E2E_STACK=attach`, so a job can never test an image it did not build:
+
+| Workflow                | Trigger                | What it does                                                              |
+| ----------------------- | ---------------------- | ------------------------------------------------------------------------- |
+| `checks.yml` → `static` | pull request, `main`   | lint, typecheck, `qase:check`; no SUT checkout, no Docker                 |
+| `checks.yml` → `suite`  | pull request, `main`   | calls `run-suite.yml` with `sut-ref: pin` and `verify-sut-context: true`  |
+| `run-suite.yml`         | called                 | checks out the suite and the SUT, builds, runs, reports `run-link`        |
+| `qase.yml`              | `main`                 | the same suite inline with `QASE_MODE=testops`, token in `production`     |
+
+`run-suite.yml` is public on purpose: the repository that owns the SUT calls it with
+`sut-ref: ${{ github.sha }}`, which is how a pull request there is tested against its own commit
+rather than the pin. `qase.yml` stays inline because a job that calls a reusable workflow cannot use
+`environment`, and the token must not become a repository secret. See
+[0003](../decisions/0003-reusable-suite-workflow.md).
+
 ## Reset semantics
 
 The global setup resets the database once per run: everything is deleted, the administrator is

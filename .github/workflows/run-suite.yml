@@ -1,0 +1,188 @@
+name: Suite
+
+# The one implementation of "build the system under test, run the suite against
+# it". This repository's pull-request gate calls it, and so does the repository
+# that owns the SUT: that is what makes a pull request there test its own commit
+# instead of the pinned one. Keep the steps here — a caller that copied them
+# would drift from the build that was tested, and only one of the copies would
+# get a fix.
+#
+# A job that calls a reusable workflow cannot set `environment` or
+# `timeout-minutes`, so the timeout lives below and a caller that needs an
+# environment (this repository's qase.yml, whose token sits in `production`) has
+# to stay inline. See docs/decisions/0003-reusable-suite-workflow.md.
+on:
+  workflow_call:
+    inputs:
+      sut-repository:
+        description: Repository holding the system under test, e.g. owner/order-desk.
+        type: string
+        required: true
+      sut-ref:
+        description: Commit, branch or tag of the SUT to build; `pin` reads sut.lock.json.
+        type: string
+        default: pin
+      suite-ref:
+        description: Ref of this repository to check out; unused when it calls itself.
+        type: string
+        default: main
+      qase-mode:
+        description: "`off` runs offline; `testops` publishes a run and needs the token."
+        type: string
+        default: "off"
+      run-title:
+        description: TestOps run title; a published run is tagged `ci,e2e`.
+        type: string
+        default: Order Desk web · e2e
+      verify-sut-context:
+        description: Fail when docs/generated does not match the checkout; only with sut-ref pin.
+        type: boolean
+        default: false
+    secrets:
+      QASE_TESTOPS_API_TOKEN:
+        description: TestOps token; required when qase-mode is testops, never for a fork.
+        required: false
+    outputs:
+      run-link:
+        description: The TestOps run URL, empty unless qase-mode is testops.
+        value: ${{ jobs.suite.outputs.run-link }}
+
+jobs:
+  suite:
+    name: Suite
+    runs-on: ubuntu-latest
+    # The caller cannot cap a job that calls a reusable workflow, so the cap is
+    # here: a cold image build plus both browser projects fits twice over.
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    outputs:
+      run-link: ${{ steps.link.outputs.run-link }}
+    env:
+      CI: "true"
+      # The SUT is checked out inside the workspace; the compose build context
+      # and the generated context both follow SUT_DIR.
+      SUT_DIR: sut/order-desk
+      # The stack is started explicitly below, so the suite must not manage it.
+      # attach rather than auto: a stack whose images do not match SUT_DIR fails
+      # the run instead of rebuilding behind a green result.
+      E2E_STACK: attach
+      QASE_MODE: ${{ inputs.qase-mode }}
+      QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TESTOPS_API_TOKEN }}
+    steps:
+      # There is no way to pass "the calling repository" as a checkout target, so
+      # the two cases are separate: called by this repository, the right checkout
+      # is the caller's ref (a pull request head, not `main`); called from the SUT
+      # repository, it is this repository at `suite-ref`.
+      - name: Check out the suite when this repository is the caller
+        if: github.repository == 'ge-a-nikitin/hecho-e2e'
+        uses: actions/checkout@v4
+        with:
+          clean: true
+
+      - name: Check out the suite from this repository
+        if: github.repository != 'ge-a-nikitin/hecho-e2e'
+        uses: actions/checkout@v4
+        with:
+          repository: ge-a-nikitin/hecho-e2e
+          ref: ${{ inputs.suite-ref }}
+          clean: true
+
+      # `pin` is what this repository runs: the commit whose generated context is
+      # committed, so sut:check can compare them. A caller that owns the SUT passes
+      # its own SHA — the image it builds is then the code under review.
+      - name: Resolve the SUT ref
+        id: sut
+        env:
+          INPUT_REF: ${{ inputs.sut-ref }}
+          INPUT_VERIFY: ${{ inputs.verify-sut-context }}
+        run: |
+          set -euo pipefail
+
+          if [ "$INPUT_REF" = "pin" ]; then
+            ref=$(node -p "require('./sut.lock.json').ref")
+          elif [ "$INPUT_VERIFY" = "true" ]; then
+            echo "::error::verify-sut-context compares the committed snapshot with the checkout, so it only works with sut-ref: pin."
+            exit 1
+          else
+            ref="$INPUT_REF"
+          fi
+
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+          echo "Building \`${{ inputs.sut-repository }}\` at \`$ref\`." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Check out the system under test
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.sut-repository }}
+          ref: ${{ steps.sut.outputs.ref }}
+          path: sut/order-desk
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Check the generated SUT context
+        if: inputs.verify-sut-context
+        run: pnpm sut:check
+
+      - name: Start the e2e stack
+        run: pnpm stack:up
+
+      - name: Run the suite
+        env:
+          # The reporter prints `Test run link: <url>` and the caller reads that
+          # line; describing the run with the resolved ref keeps TestOps honest
+          # about which commit the run covered.
+          QASE_TESTOPS_RUN_TITLE: ${{ inputs.run-title }}
+          QASE_TESTOPS_RUN_DESCRIPTION: Suite of ${{ inputs.sut-repository }} at ${{ steps.sut.outputs.ref }}
+          QASE_TESTOPS_RUN_TAGS: ci,e2e
+        run: |
+          set -o pipefail
+          pnpm e2e 2>&1 | tee e2e.log
+
+      - name: Read the TestOps run link
+        id: link
+        if: always()
+        run: |
+          set -euo pipefail
+          link=$(grep -oE 'Test run link: https://[^ ]+' e2e.log | tail -1 | awk '{print $NF}' || true)
+
+          if [ -z "$link" ]; then
+            echo "No Qase run link in the output." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "run-link=$link" >> "$GITHUB_OUTPUT"
+          echo "Qase e2e run: $link" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Show the stack logs on failure
+        if: failure()
+        run: pnpm stack:logs --no-follow --tail 200
+
+      - name: Stop the e2e stack
+        if: always()
+        run: pnpm stack:down
+
+      - name: Upload the report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+            e2e.log
+          retention-days: 7
+          if-no-files-found: ignore

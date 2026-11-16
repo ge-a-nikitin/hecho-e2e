@@ -92,8 +92,14 @@ shows the current shape is hard to read.
 
 ## 13. SUT-side pull-request trigger
 
-The SUT does not run this suite on its own pull requests, so a breaking change is discovered here
-only after a lock bump. **Revisit** once the suite is stable and fast enough to gate the SUT.
+`.github/workflows/run-suite.yml` exists: the repository that owns the SUT can call it with
+`sut-ref: ${{ github.sha }}` and have its own pull request tested with the current suite
+([0003](decisions/0003-reusable-suite-workflow.md)). **Why still open:** the caller workflow lives in
+the SUT repository, which is a change over there; until it merges nothing triggers the suite on a SUT
+pull request. **Revisit** when it lands: check that the run stamps the reviewed commit, then decide
+whether the job becomes a required check next to the unit and integration runs. The known costs are
+one image build plus one browser run per SUT pull request, and a run that reddens their pull requests
+whenever this workflow breaks — so `main` here has to stay green.
 
 ## 15. A test id for the order status
 

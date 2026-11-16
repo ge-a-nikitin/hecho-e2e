@@ -1,8 +1,11 @@
 name: Checks
 
-# Pull-request gate: static checks, the SUT context snapshot, and the full suite
-# against a stack built from the pinned SUT commit. No Qase token is available
-# here, so the run stays offline; publishing happens from `main` in qase.yml.
+# Pull-request gate: the static checks, then the suite against a stack built from
+# the pinned SUT commit. The suite itself lives in run-suite.yml — the same
+# workflow the SUT repository calls for its own pull requests — so this gate
+# exercises the code the callers run instead of a copy of it. No Qase token is
+# available here, so the run stays offline; publishing happens from `main` in
+# qase.yml.
 on:
   pull_request:
   push:
@@ -16,32 +19,15 @@ permissions:
   contents: read
 
 jobs:
-  suite:
-    name: Lint, context and suite
+  static:
+    name: Lint, types and catalogue
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 15
     env:
       CI: "true"
-      # The SUT is checked out inside the workspace; the compose build context
-      # and the context generator both follow SUT_DIR.
-      SUT_DIR: sut/order-desk
-      # The stack is started explicitly below, so the suite must not manage it.
-      E2E_STACK: attach
-      QASE_MODE: "off"
     steps:
       - name: Check out the suite
         uses: actions/checkout@v4
-
-      - name: Read the pinned SUT commit
-        id: sut
-        run: echo "ref=$(node -p "require('./sut.lock.json').ref")" >> "$GITHUB_OUTPUT"
-
-      - name: Check out the SUT at the pinned commit
-        uses: actions/checkout@v4
-        with:
-          repository: ge-a-nikitin/hecho-demo
-          ref: ${{ steps.sut.outputs.ref }}
-          path: sut/order-desk
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -55,9 +41,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
-
       - name: Lint
         run: pnpm lint
 
@@ -67,25 +50,15 @@ jobs:
       - name: Check the Qase catalogue against the specs
         run: pnpm qase:check
 
-      - name: Check the generated SUT context
-        run: pnpm sut:check
-
-      - name: Start the e2e stack
-        run: pnpm stack:up
-
-      - name: Run the suite
-        run: pnpm e2e
-
-      - name: Stop the e2e stack
-        if: always()
-        run: pnpm stack:down
-
-      - name: Upload the Playwright report
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: |
-            playwright-report
-            test-results
-          retention-days: 7
+  suite:
+    name: Suite
+    # sut-ref stays `pin`: this gate tests the commit the generated context
+    # describes, and the provenance stamp on the images refuses anything else.
+    uses: ./.github/workflows/run-suite.yml
+    permissions:
+      contents: read
+    with:
+      sut-repository: ge-a-nikitin/hecho-demo
+      sut-ref: pin
+      verify-sut-context: true
+      qase-mode: "off"
