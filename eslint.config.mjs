@@ -14,6 +14,12 @@ export default tseslint.config(
   {
     ignores: [
       "node_modules/**",
+      // Local, git-ignored trees: where CI writes the SUT checkout and where the
+      // draft cases of the authoring skill wait to become a spec. Linting them
+      // either trips the parser on a second tsconfig root or fails on code that is
+      // not ours.
+      "sut/**",
+      "test-cases-draft/**",
       "test-results/**",
       "playwright-report/**",
       "blob-report/**",
