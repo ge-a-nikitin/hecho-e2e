@@ -1,7 +1,7 @@
 {
   "generatedBy": "scripts/sut/sync-context.mjs",
   "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
-  "sutRef": "7d9d35f472bae4e3d7fe3226d60b04025ba99ba6",
+  "sutRef": "794c96682edf9b9e9905e60cc48eb381da21c907",
   "documents": [
     {
       "path": "docs/en/database-schema.md",
@@ -12,14 +12,14 @@
     {
       "path": "docs/en/qase.md",
       "title": "Qase TestOps reporting",
-      "bytes": 7280,
-      "sha256": "a135b8590aeaf6b9f2fbd08edd7872f269644bf89c1b3eb8be67437b33de4630"
+      "bytes": 7796,
+      "sha256": "9d9484d32f648ac33fe1f59f0e8eade2ff3522ccba19f96ca7b4333ad22c1aec"
     },
     {
       "path": "docs/en/README.md",
       "title": "HECHO — documentation",
-      "bytes": 51341,
-      "sha256": "63bbc1c04dc9022bc88b8c75b612a40a52c95fd7bdf96bf2457f47f5b885b560"
+      "bytes": 52187,
+      "sha256": "130448976862c88a874947f2937eb0cb78d2fef89067abf118910792875e6e71"
     },
     {
       "path": "README.en.md",
