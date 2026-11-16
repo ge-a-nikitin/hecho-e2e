@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { qase } from "playwright-qase-reporter";
 import { saveSignedInState } from "../../support/auth.js";
 import { DevtoolsClient, type UserRole } from "../../support/devtools.js";
 import { ROLE_CREDENTIALS, ROLES, type Role } from "../../support/env.js";
@@ -11,6 +12,12 @@ import { ROLE_CREDENTIALS, ROLES, type Role } from "../../support/env.js";
  * ADMIN_EMAIL/ADMIN_PASSWORD; the customer and the executor are created here so a
  * test can rely on both roles without inventing an account. `ensureUser` repairs
  * an account left behind by a previous run with E2E_RESET=never.
+ *
+ * These are fixtures, not cases: each one calls `qase.ignore()` so TestOps does
+ * not auto-create a case per role. Without it a full run reported three extra
+ * rows with no catalogue entry (`7 × 2 + 3 = 17`), which read as product cases
+ * that nothing owns; with it the run holds exactly the catalogued cases, one row
+ * per viewport (`7 × 2 = 14`, `docs/qase.md`).
  */
 const API_ROLES = {
   admin: "ADMIN",
@@ -20,6 +27,8 @@ const API_ROLES = {
 
 for (const role of ROLES) {
   test(`signs the baseline ${role} in and stores the session`, async () => {
+    qase.ignore();
+
     const credentials = ROLE_CREDENTIALS[role];
 
     await new DevtoolsClient().ensureUser(API_ROLES[role], credentials.email, credentials.password);
