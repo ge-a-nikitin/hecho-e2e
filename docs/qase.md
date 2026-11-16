@@ -123,7 +123,7 @@ to fail on the Pixel 7 only:
 
 Without the parameter the pair collapses into a single status, so a mobile-only failure looks like a
 case that failed on both and the desktop result is not visible at all. Splitting the projects into two
-runs is therefore unnecessary (`docs/backlog.md` §12).
+runs is therefore unnecessary (`docs/backlog.md` §11).
 
 The `setup` project is preparation rather than a case — it imports `@playwright/test` directly and never
 calls `qc()` — so its three executions used to reach TestOps as auto-created cases with no catalogue

@@ -59,9 +59,10 @@ scripts/         SUT context generator, stack wrapper, Qase sync and check
 docker-compose.e2e.yml   the ephemeral stack on ports 7200-7204
 ```
 
-The suite is currently empty by design: the catalogue and the specs were reset, so the first case
-starts from a clean board. `docs/backlog.md` records that state and the order in which coverage
-returns.
+Seven cases cover the customer side of creating and submitting an order
+(`tests/orders/customer-orders.spec.ts`, catalogue keys `orders.*`); every browser project runs all of
+them, so a run executes seventeen times and reports fourteen TestOps rows. Everything after submission
+is still open — `docs/backlog.md` records the order in which coverage grows.
 
 ## Where to start reading
 
