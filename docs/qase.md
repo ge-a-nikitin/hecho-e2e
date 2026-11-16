@@ -122,11 +122,20 @@ to fail on the Pixel 7 only:
 | 2     | 63  | two rows, `passed` on `chromium` and `failed` on `pixel-7` (`total 5`)  |
 
 Without the parameter the pair collapses into a single status, so a mobile-only failure looks like a
-case that failed on both and the desktop result is not visible at all. The setup project imports
-`@playwright/test` directly and stays unparameterised, so a full run of seven cases reports
-`7 × 2 + 3 = 17` rows — the whole suite published this way (run 64) reported `total 17`, `passed 17`,
-where the same suite reported `total 10` before the parameter existed. Splitting the projects into two
+case that failed on both and the desktop result is not visible at all. Splitting the projects into two
 runs is therefore unnecessary (`docs/backlog.md` §12).
+
+The `setup` project is preparation rather than a case — it imports `@playwright/test` directly and never
+calls `qc()` — so its three executions used to reach TestOps as auto-created cases with no catalogue
+entry, which read as product cases nobody owns. They now call `qase.ignore()`
+(`tests/setup/auth.setup.ts`): still executed, never reported. The shape of a full run is therefore
+`7 × 2 = 14` rows, which is what the catalogue holds; the history of the measurement:
+
+| Suite state                      | Run | TestOps stored |
+| -------------------------------- | --- | -------------- |
+| results not parameterised        | 54  | `total 10` (7 cases + 3 setup rows) |
+| `Viewport` parameter added       | 64  | `total 17` (7 × 2 + 3)             |
+| setup fixtures ignored           | 65  | `total 14` (7 × 2)                 |
 
 ## Testworthiness of a case
 
