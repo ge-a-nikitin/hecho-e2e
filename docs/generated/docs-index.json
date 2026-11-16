@@ -1,7 +1,7 @@
 {
   "generatedBy": "scripts/sut/sync-context.mjs",
   "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
-  "sutRef": "4e156661643e1bd6316799708493f8a317dcadae",
+  "sutRef": "7d9d35f472bae4e3d7fe3226d60b04025ba99ba6",
   "documents": [
     {
       "path": "docs/en/database-schema.md",
@@ -12,8 +12,8 @@
     {
       "path": "docs/en/qase.md",
       "title": "Qase TestOps reporting",
-      "bytes": 6958,
-      "sha256": "b338231343bbc8370022d3f6f6393393172925622206cfabf76030ecc5286cb9"
+      "bytes": 7280,
+      "sha256": "a135b8590aeaf6b9f2fbd08edd7872f269644bf89c1b3eb8be67437b33de4630"
     },
     {
       "path": "docs/en/README.md",
