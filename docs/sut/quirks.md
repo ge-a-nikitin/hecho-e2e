@@ -53,7 +53,7 @@ intermediate draft to observe.
 **A status is copy, not an id.** Rows and cards render a localised label and the snapshot holds no
 `order-status*` id: `NEW` reads "Draft", `WAITING_DISTRIBUTION` reads "Awaiting distribution",
 `ASSIGNED` reads "Assigned". A case asserts that text inside `order-card-<id>`; the missing id is
-requested in `docs/backlog.md` §15 rather than worked around.
+requested in `docs/backlog.md` §13 rather than worked around.
 
 **The category select gates the form.** With no category the form shows `no-categories` and both
 submit buttons stay disabled, so a category has to exist before the panel is opened.

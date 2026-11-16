@@ -60,7 +60,7 @@ it is requested in the SUT repository; the test does not fall back to a selector
 - A case that needs a second role after the first one has finished signs in again with the same step:
   `/login` stays reachable while a session exists and the form replaces it, so no sign-out, no second
   context (`docs/sut/quirks.md`). Two roles visible *at the same time* is out of scope until a case
-  needs it (`docs/backlog.md` §11).
+  needs it (`docs/backlog.md` §10).
 - A case that needs its own actor calls `factory.createActor("CUSTOMER")` and gets a cookie. The
   baseline accounts are read-only: a case that changes an account creates its own actor instead.
 - Data is prepared with `factory` (public API) or the devtools API, in `beforeEach` or at the top of
