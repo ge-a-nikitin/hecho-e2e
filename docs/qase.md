@@ -105,6 +105,28 @@ the stored case, so every sync rewrote all seven cases and the drift gate could 
   red and no run reaches TestOps.
 - `qase.config.json` keeps `mode: "off"` as the default so a forgotten environment variable cannot
   publish a debug run.
+- A run that dies before the first test — the stack guard refusing a drifted build, for instance —
+  still leaves an empty completed run in TestOps, because the reporter creates the run when it starts
+  and completes it when it stops. Delete it by hand: it carries no results and no cases.
+
+### One case, two viewports
+
+Both browser projects run the same cases, so a case has two results in one run. The auto fixture
+`qaseViewport` (`support/fixtures.ts`) labels each result with the parameter `Viewport`, whose value
+is the Playwright project name, and TestOps then keeps one row per viewport. Measured with a case made
+to fail on the Pixel 7 only:
+
+| Probe | Run | What TestOps stored                                                     |
+| ----- | --- | ----------------------------------------------------------------------- |
+| 1     | 62  | one row for the case, status `failed` (`total 4`, `passed 3`)           |
+| 2     | 63  | two rows, `passed` on `chromium` and `failed` on `pixel-7` (`total 5`)  |
+
+Without the parameter the pair collapses into a single status, so a mobile-only failure looks like a
+case that failed on both and the desktop result is not visible at all. The setup project imports
+`@playwright/test` directly and stays unparameterised, so a full run of seven cases reports
+`7 × 2 + 3 = 17` rows — the whole suite published this way (run 64) reported `total 17`, `passed 17`,
+where the same suite reported `total 10` before the parameter existed. Splitting the projects into two
+runs is therefore unnecessary (`docs/backlog.md` §12).
 
 ## Testworthiness of a case
 

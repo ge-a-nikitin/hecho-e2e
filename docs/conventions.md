@@ -105,6 +105,11 @@ test.skip(testInfo.project.name !== "pixel-7", "the order card only collapses on
 `eslint.config.mjs` allows a conditional `test.skip` with a reason and still rejects a bare
 `test.skip()`, which would silently drop the case everywhere.
 
+Both projects publish, and every result carries the `Viewport` parameter (the auto fixture
+`qaseViewport` in `support/fixtures.ts`). TestOps keeps one row per viewport, so a mobile-only failure
+is a failed row of its own rather than a status shared with the desktop execution. Removing that
+fixture collapses the two results into a single row again; `docs/qase.md` records the measurement.
+
 ## Parked cases
 
 A case blocked by a product defect is parked with `test.fixme("<link to the SUT issue>")` and a
