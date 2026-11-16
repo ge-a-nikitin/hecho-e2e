@@ -6,4 +6,12 @@
  * matching the cases in TestOps. An empty map simply means no sync has run yet,
  * and every suite still reports by title.
  */
-export const qaseCaseIds: Readonly<Record<string, number | undefined>> = {};
+export const qaseCaseIds: Readonly<Record<string, number | undefined>> = {
+  "orders.draft.create": 200,
+  "orders.draft.create-submit": 201,
+  "orders.draft.create-optional": 202,
+  "orders.draft.submit-pool": 203,
+  "orders.draft.submit-executor": 204,
+  "orders.draft.submit-again": 205,
+  "orders.submit.pool-visibility": 206,
+};

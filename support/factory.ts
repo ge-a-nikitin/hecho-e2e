@@ -65,10 +65,27 @@ export class DataFactory {
     );
   }
 
-  /** A category for order preconditions; creating it needs an administrator. */
+  async listCategories(actor: Actor): Promise<Category[]> {
+    return requireOk(
+      await this.http.get<Category[]>("/categories", { cookie: actor.cookie }),
+      "GET /api/categories",
+    );
+  }
+
+  /**
+   * A category for order preconditions; creating it needs an administrator.
+   *
+   * A category name is unique, so a run that reuses a database
+   * (`E2E_RESET=never`) would otherwise fail on a 409 the second time. The
+   * lookup keeps the helper usable in both modes, the same way `ensureUser`
+   * does for accounts.
+   */
   async category(name = "E2E category"): Promise<Category> {
     if (this.cachedCategory === undefined) {
-      this.cachedCategory = await this.createCategory(await this.admin(), name);
+      const admin = await this.admin();
+      const existing = (await this.listCategories(admin)).find((entry) => entry.name === name);
+
+      this.cachedCategory = existing ?? (await this.createCategory(admin, name));
     }
 
     return this.cachedCategory;
@@ -112,5 +129,25 @@ export class DataFactory {
   /** Lists what the actor can see; the API returns a plain array. */
   async listOrders(actor: Actor): Promise<Order[]> {
     return requireOk(await this.http.get<Order[]>("/orders", { cookie: actor.cookie }), "GET /api/orders");
+  }
+
+  /**
+   * The one order an actor has under this title.
+   *
+   * A case that drives the form in the browser does not learn the id of what it
+   * created, and the id is what every templated test id needs. Titles are made
+   * unique per case, so a single match is the contract; two matches mean the
+   * case created something twice and should fail loudly.
+   */
+  async findOrder(actor: Actor, title: string): Promise<Order> {
+    const matches = (await this.listOrders(actor)).filter((order) => order.title === title);
+
+    if (matches.length !== 1) {
+      throw new Error(
+        `Expected exactly one order titled "${title}" for ${actor.email}, found ${matches.length}.`,
+      );
+    }
+
+    return matches[0] as Order;
   }
 }

@@ -1,3 +1,4 @@
+
 # hecho-e2e
 
 End-to-end tests for **HECHO order desk** — a work-order board with customer, executor and
@@ -22,22 +23,22 @@ the running stack.
 
 ## Commands
 
-| Command             | What it does                                                        |
-| ------------------- | ------------------------------------------------------------------- |
-| `pnpm e2e`          | full suite: setup project, then `chromium` and `pixel-7`             |
-| `pnpm e2e:smoke`    | only the `@smoke` cases                                             |
-| `pnpm e2e --project=chromium` | the fast loop while writing a case                        |
-| `pnpm e2e --ui`     | interactive mode                                                    |
-| `pnpm report`       | open the last HTML report                                           |
-| `pnpm stack:up`     | build and start the e2e stack, wait for health                      |
-| `pnpm stack:down`   | stop the stack and delete its volumes                               |
-| `pnpm stack:reset`  | wipe the database through `POST /api/devtools/reset`                |
-| `pnpm stack:status` | containers, API health, devtools probe                              |
-| `pnpm sut:status`   | which SUT commit is checked out and whether the context is current  |
-| `pnpm sut:sync`     | regenerate `docs/generated/` from the SUT checkout                  |
-| `pnpm sut:check`    | fail when `docs/generated/` does not match the checkout             |
-| `pnpm qase:check`   | offline parity between the catalogue and the specs                  |
-| `pnpm qase:sync`    | publish the catalogue to TestOps and refresh `qase/case-ids.ts`     |
+| Command                         | What it does                                                       |
+| ------------------------------- | ------------------------------------------------------------------ |
+| `pnpm e2e`                    | full suite: setup project, then `chromium` and `pixel-7`       |
+| `pnpm e2e:smoke`              | only the `@smoke` cases                                          |
+| `pnpm e2e --project=chromium` | the fast loop while writing a case                                 |
+| `pnpm e2e --ui`               | interactive mode                                                   |
+| `pnpm report`                 | open the last HTML report                                          |
+| `pnpm stack:up`               | build and start the e2e stack, wait for health                     |
+| `pnpm stack:down`             | stop the stack and delete its volumes                              |
+| `pnpm stack:reset`            | wipe the database through `POST /api/devtools/reset`             |
+| `pnpm stack:status`           | containers, API health, devtools probe                             |
+| `pnpm sut:status`             | which SUT commit is checked out and whether the context is current |
+| `pnpm sut:sync`               | regenerate `docs/generated/` from the SUT checkout               |
+| `pnpm sut:check`              | fail when `docs/generated/` does not match the checkout          |
+| `pnpm qase:check`             | offline parity between the catalogue and the specs                 |
+| `pnpm qase:sync`              | publish the catalogue to TestOps and refresh `qase/case-ids.ts`  |
 
 ## Requirements
 

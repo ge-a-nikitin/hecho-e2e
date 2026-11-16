@@ -20,6 +20,12 @@ predate the reset: run `pnpm e2e` so the setup project writes them again.
 **Both sign-out buttons exist.** `sign-out` (sidebar) and `mobile-sign-out` (top bar) are always in
 the DOM, one hidden by CSS. A locator that matches both fails strict mode; filter by visibility.
 
+**Signing in again replaces a live session.** `/login` stays reachable while a session cookie exists
+(it does not bounce a signed-in visitor), and submitting the form swaps the session for the new
+account: the next navigation lands on that role's panel. So a case that needs a second role after the
+first one has finished does not sign out and does not open a second context — it calls the shared step
+again (`orders.submit.pool-visibility`).
+
 ## Rendering and routing
 
 **The SPA is served for every path.** Deep links work through nginx's `try_files ... /index.html`.
@@ -36,6 +42,47 @@ navigates back. Screenshots of the card on mobile show a bottom sheet, not a dia
 
 **Client-side paging.** Ten rows per page, computed in the browser from the full list. With eleven
 orders, page one shows ten and page two shows one; the API has no paging parameters.
+
+## Orders: creating and submitting
+
+**Two submit buttons on one form.** `save-draft` creates the order in `NEW`; `submit-create-order`
+("Create and send") creates it *and* submits it, so the order arrives in `WAITING_DISTRIBUTION`
+(`ASSIGNED` when the form already names an executor). Both are a single request: there is no
+intermediate draft to observe.
+
+**A status is copy, not an id.** Rows and cards render a localised label and the snapshot holds no
+`order-status*` id: `NEW` reads "Draft", `WAITING_DISTRIBUTION` reads "Awaiting distribution",
+`ASSIGNED` reads "Assigned". A case asserts that text inside `order-card-<id>`; the missing id is
+requested in `docs/backlog.md` §15 rather than worked around.
+
+**The category select gates the form.** With no category the form shows `no-categories` and both
+submit buttons stay disabled, so a category has to exist before the panel is opened.
+`factory.category()` creates one (with an administrator inside) and reuses an existing one, because a
+category name is unique.
+
+**Draft actions sit on the row.** `draft-actions-<id>` holds `edit-order-<id>` and
+`submit-draft-<id>`; the submit button reads "Send for distribution" without an executor and "Send to
+executor" with one. Once the order leaves `NEW` the whole block disappears, so "the action is gone" and
+"the status changed" are the same assertion told twice.
+
+**An empty list unmounts `orders-list`.** A fresh account renders `orders-empty-state` instead, so a
+case cannot wait for `orders-list` there.
+
+**A repeated submit answers 409.** `POST /api/orders/:id/submit` on anything but a draft returns
+`409 CONFLICT` with `message: "Only a new draft can be submitted"` and changes neither the status nor
+the history. `app-toast` is mounted permanently, so its presence proves nothing; assert the status code
+and the unchanged row.
+
+**A pool row carries no test id of its own.** The executor list renders each order as an
+`order-list-card` article with no `data-testid`, and `order-card-<id>` exists only on the customer
+panel: an executor-side case addresses the actions inside the row — `open-order-<id>` and
+`claim-order-<id>` — and `claim-order-<id>` is the affordance that means "this order is in the pool and
+I may take it". `executor-orders-loading` is mounted while the pool loads, so a case waits for the
+action rather than for the list container. A submitted draft is visible to every executor in
+`WAITING_DISTRIBUTION` until one of them claims it.
+
+**The detail card loads lazily.** `order-detail` is visible before its content ("Loading order…"), so a
+case asserts the values inside it, never the container alone.
 
 ## Data
 
