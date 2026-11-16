@@ -49,8 +49,10 @@ Notes that decide test design:
 ## Where the status is visible
 
 Every panel's order card and order list render the status label, and the order detail shows the full
-status history with the actor. Test ids of the order card and its actions are listed in
-`docs/generated/testids.json`; the most useful ones are:
+status history with the actor. The label is copy, not the enum: in English `NEW` reads "Draft",
+`WAITING_DISTRIBUTION` reads "Awaiting distribution", `ASSIGNED` reads "Assigned", and no test id
+addresses it (`docs/sut/quirks.md`, "Orders: creating and submitting"). Test ids of the order card and
+its actions are listed in `docs/generated/testids.json`; the most useful ones are:
 
 | Test id                            | Screen                                        |
 | ---------------------------------- | --------------------------------------------- |

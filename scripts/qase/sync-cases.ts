@@ -30,7 +30,7 @@ import {
 } from "../../qase/enums.js";
 import { qcUsageIndex } from "../../qase/spec-index.js";
 import {
-  caseTagPrefix,
+  caseTags,
   hasDrift,
   planArchives,
   planMatches,
@@ -317,7 +317,7 @@ function toPayload(qaseCase: QaseCase, suiteId: number, specPaths: readonly stri
       expected_result: step.expected,
       ...(step.data === undefined ? {} : { data: step.data }),
     })),
-    tags: tagsFor(qaseCase),
+    tags: caseTags(qaseCase.key, qaseCase.layer, qaseCase.suite),
   };
 }
 
@@ -329,17 +329,6 @@ function describe(qaseCase: QaseCase, specPaths: readonly string[]): string {
       : `_Automated by ${specPaths.map((path) => `\`${path}\``).join(", ")}._`;
 
   return `${qaseCase.description.trim()}\n\n${credit}`;
-}
-
-function tagsFor(qaseCase: QaseCase): string[] {
-  return [`${caseTagPrefix}${qaseCase.key}`, qaseCase.layer, ...qaseCase.suite.map(slugTag)];
-}
-
-function slugTag(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/gu, "-")
-    .replace(/^-+|-+$/gu, "");
 }
 
 /**

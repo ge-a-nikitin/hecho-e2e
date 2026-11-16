@@ -80,12 +80,24 @@ case whose metadata or content actually differs. A key that disappears from the 
 case moved to `Archive / <original top-level suite>` with tags and results intact; a key that returns
 comes back with the same ID.
 
+Tags are written as a set: the identity tag, the layer, and every suite slug, deduplicated by
+`caseTags()`. The layer and the root suite slug collide by design (`e2e` on layer `e2e`, `e2e` from
+suite `E2E`), and TestOps stores one entry per tag title — a repeated tag in the payload never matched
+the stored case, so every sync rewrote all seven cases and the drift gate could not pass.
+
 ## Reporting
 
-- Locally and in pull requests: `QASE_MODE=off`. No token, no network, deterministic checks.
-- `main`: `.github/workflows/qase.yml` publishes a run (`QASE_MODE=testops`, token from the
-  `production` environment) and fails when `qase:sync:dry` would change anything, which means the
-  catalogue and TestOps drifted.
+- Locally and in pull requests: `QASE_MODE=off`. No token, no network, deterministic checks. `.env.e2e`
+  keeps that default; a one-off publishing run sets the variable in the shell —
+  `QASE_MODE=testops pnpm e2e` — because the environment wins over the file.
+- `main`: `.github/workflows/qase.yml` publishes a run (`QASE_MODE=testops`) and fails when
+  `qase:sync:dry` would change anything, which means the catalogue and TestOps drifted.
+- The token is the environment secret `QASE_TESTOPS_API_TOKEN` of the `production` environment
+  (Settings → Environments → `production` → Environment secrets). `qase.config.json` already names the
+  project (`HECHO`) and the US host, so the workflow sets neither.
+- A new or edited case has to be published and `qase/case-ids.ts` committed in the same pull request:
+  the job runs `qase:sync:dry` before the suite, so merging an unsynced catalogue turns the pipeline
+  red and no run reaches TestOps.
 - `qase.config.json` keeps `mode: "off"` as the default so a forgotten environment variable cannot
   publish a debug run.
 

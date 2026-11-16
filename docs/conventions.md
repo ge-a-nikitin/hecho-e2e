@@ -53,6 +53,14 @@ it is requested in the SUT repository; the test does not fall back to a selector
 
 - Signed-in case: `test.use(sessionOf.customer)` (or `.admin`, `.executor`). The session files are
   written by the setup project; a missing file fails with instructions.
+- A case that signs in inside the test calls the shared step `signInAs(page, actor)`
+  (`support/steps/sign-in.ts`). It takes the user type and nothing else: a role name resolves to the
+  credentials in the environment, an actor created by the factory brings its own. The step returns once
+  that role's panel is on screen. No case types an email or a password of its own.
+- A case that needs a second role after the first one has finished signs in again with the same step:
+  `/login` stays reachable while a session exists and the form replaces it, so no sign-out, no second
+  context (`docs/sut/quirks.md`). Two roles visible *at the same time* is out of scope until a case
+  needs it (`docs/backlog.md` §11).
 - A case that needs its own actor calls `factory.createActor("CUSTOMER")` and gets a cookie. The
   baseline accounts are read-only: a case that changes an account creates its own actor instead.
 - Data is prepared with `factory` (public API) or the devtools API, in `beforeEach` or at the top of

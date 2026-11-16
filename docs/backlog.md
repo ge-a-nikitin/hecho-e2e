@@ -2,13 +2,14 @@
 
 What is deliberately not done yet, why, and when to revisit. Ordered by expected value.
 
-## 1. First Qase sync
+## 1. Publishing from CI
 
-`qase/index.ts` holds no entries and `qase/case-ids.ts` is still empty: the suite was reset, and
-nothing has been published from this repository. **Why deferred:** there is nothing to publish until
-the first case is written, and the sync needs `QASE_TESTOPS_API_TOKEN`, which this checkout does not
-carry. **Revisit:** with the first catalogue entry — execute `pnpm qase:sync:dry`, review the plan,
-then `pnpm qase:sync` and commit the ids.
+The catalogue is published: `pnpm qase:sync` created the `E2E` suite and its cases and wrote the IDs
+to `qase/case-ids.ts`, and `qase:sync:dry` now reports an empty plan. **Why still open:** the token is
+added by hand, as the `QASE_TESTOPS_API_TOKEN` secret of the `production` environment in GitHub, and
+the reporting job only runs on `main` — a local `qase:sync:dry` is the whole proof until the first
+merge. **Revisit:** after the first `Qase` workflow run on `main`; open the run in TestOps, confirm the
+seven cases carry results for both browser projects, then delete this item.
 
 ## 2. Coverage of the order lifecycle
 
@@ -72,12 +73,16 @@ grows beyond one pull-request run.
 the ref and runs `pnpm sut:sync` would keep the context current without a human remembering.
 **Revisit when** the SUT ships more than weekly.
 
-## 11. Multi-role journeys in one test
+## 11. Two roles on screen at once
 
 Sessions come from `test.use(sessionOf.<role>)`, which keeps the project's device emulation but fixes
-one role per spec. A journey that switches roles in one browser (customer submits, admin confirms)
-would need a helper that creates a second context with the project's device options. **Revisit when**
-such a case is worth its complexity; most can be split into two cases with API state in between.
+one role per spec. **Measured:** a journey that *switches* roles in sequence needs neither — `/login`
+stays reachable while a session exists and the form replaces it, so `signInAs(page, first)` …
+`signInAs(page, second)` works inside one test (`orders.submit.pool-visibility`, `docs/sut/quirks.md`).
+What is still missing is the other shape: two roles visible side by side, where a case compares what
+the customer and the executor see at the same moment. That needs a helper creating a second context
+with the project's device options. **Revisit when** such a comparison is worth the complexity; most
+journeys can be split into two cases with API state in between.
 
 ## 12. Qase runs per project
 
@@ -90,7 +95,15 @@ shows the current shape is hard to read.
 The SUT does not run this suite on its own pull requests, so a breaking change is discovered here
 only after a lock bump. **Revisit** once the suite is stable and fast enough to gate the SUT.
 
-## 14. `seed()` on the devtools client
+## 15. A test id for the order status
+
+`docs/sut/statuses.md` promises a status label on every card, but the SUT exposes no id for it, so the
+customer cases read the English copy inside `order-card-<id>` (`docs/sut/quirks.md`). **Why deferred:**
+the request belongs to the SUT repository, and the current assertions hold while English is the default
+language. **Revisit when** an `order-status-<id>` id exists: replace the copy assertions in
+`tests/orders/customer-orders.spec.ts`, drop the note from `quirks.md`, and delete this entry.
+
+## 16. `seed()` on the devtools client
 
 `POST /api/devtools/seed` and `DELETE /api/devtools/seed` are documented (`docs/sut/devtools.md:50-67`),
 but `support/devtools.ts` exposes no wrapper: a case that wants "a board with work in every status" has

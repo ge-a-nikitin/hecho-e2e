@@ -72,6 +72,33 @@ export function caseKeyOf(tags: readonly string[]): string | undefined {
   return undefined;
 }
 
+/** Tag title TestOps derives from a suite node; every case carries its suite slugs. */
+export function slugTag(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/gu, "-")
+    .replace(/^-+|-+$/gu, "");
+}
+
+/**
+ * The tag titles a case is written with, before deduplication: its identity, its
+ * layer and every suite slug. Kept separate from `caseTags()` so the raw
+ * composition, collisions included, stays visible instead of silently collapsing.
+ */
+export function caseTagCandidates(key: string, layer: string, suite: readonly string[]): string[] {
+  return [`${caseTagPrefix}${key}`, layer, ...suite.map(slugTag)];
+}
+
+/**
+ * Tags written on a case. TestOps keeps tags as a set, so the list is deduplicated:
+ * the layer and a suite slug can collide (layer `e2e` and the root suite `E2E` both
+ * slug to `e2e`), and a repeated tag in the payload made every sync rewrite the
+ * case without ever converging.
+ */
+export function caseTags(key: string, layer: string, suite: readonly string[]): string[] {
+  return [...new Set(caseTagCandidates(key, layer, suite))];
+}
+
 /** Walks the suite tree upwards and returns the path from the root. */
 export function suitePathOf(suites: readonly SuiteRef[], suiteId: number | null): string[] {
   const suitesById = new Map(suites.map((suite) => [suite.id, suite]));

@@ -2,7 +2,6 @@
   "generatedBy": "scripts/sut/sync-context.mjs",
   "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
   "sutRef": "4e156661643e1bd6316799708493f8a317dcadae",
-  "sutDir": "../order-desk",
   "inputsHash": "17c680f24adaa64992955d2cf74406020f9ea0448452571451e9157665e23dbc",
   "inputFiles": [
     "README.en.md",

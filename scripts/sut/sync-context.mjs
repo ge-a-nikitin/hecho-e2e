@@ -7,7 +7,10 @@
  * ids, routes, endpoints and enums exist, so this script derives them into small
  * JSON files that are committed. A committed artefact is a snapshot: `status`
  * says whether the local SUT has moved past it, and `check` (which CI runs
- * against the pinned checkout) fails when the snapshot no longer matches.
+ * against the pinned checkout) fails when the snapshot no longer matches. The
+ * snapshot therefore records the SUT commit and never a path into this working
+ * copy, so `check` passes wherever the checkout lives (`../order-desk` locally,
+ * `sut/order-desk` in CI).
  *
  * Usage:
  *   node scripts/sut/sync-context.mjs status
@@ -138,7 +141,6 @@ function buildArtefacts(inputs) {
     "docs-index.json": { ...base, documents },
     "context.json": {
       ...base,
-      sutDir: relative(repoRoot, sutDir) || ".",
       inputsHash: inputs.inputsHash,
       inputFiles: inputs.files.map((path) => relative(sutDir, path)).sort(),
       counts: {
