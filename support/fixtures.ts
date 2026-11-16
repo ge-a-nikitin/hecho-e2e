@@ -1,4 +1,5 @@
 import { test as base, expect } from "@playwright/test";
+import { qase } from "playwright-qase-reporter";
 import { statePath, type Role } from "./env.js";
 import { DevtoolsClient } from "./devtools.js";
 import { DataFactory } from "./factory.js";
@@ -6,6 +7,8 @@ import { DataFactory } from "./factory.js";
 interface SupportFixtures {
   readonly devtools: DevtoolsClient;
   readonly factory: DataFactory;
+  /** Sentinel: labels every reported result, never read by a test. */
+  readonly qaseViewport: void;
 }
 
 /**
@@ -18,6 +21,19 @@ interface SupportFixtures {
  * fall back to the desktop viewport and hide responsive defects.
  */
 export const test = base.extend<SupportFixtures>({
+  // Both browser projects run the same cases, so one case has two results in one
+  // TestOps run. Without a distinguishing parameter TestOps stores them as one
+  // row and keeps a single status for the pair — a failure on the Pixel 7 then
+  // reads as if the case had failed everywhere, and the desktop result is gone.
+  // The parameter splits the row in two (`docs/qase.md`, measured on run 63).
+  qaseViewport: [
+    async ({}, use, testInfo) => {
+      qase.parameters({ Viewport: testInfo.project.name });
+      await use(undefined);
+    },
+    { auto: true },
+  ],
+
   devtools: async ({}, use) => {
     await use(new DevtoolsClient());
   },

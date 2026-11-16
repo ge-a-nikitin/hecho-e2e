@@ -86,9 +86,14 @@ journeys can be split into two cases with API state in between.
 
 ## 12. Qase runs per project
 
-Both browser projects report into one run. Splitting them (one run per project, tagged by device)
-would make a mobile-only failure visible in the run list. **Revisit after** the first published run
-shows the current shape is hard to read.
+**Measured:** both browser projects report into one run, and one case with two results arrived as a
+single row with a single status, so a mobile-only failure was indistinguishable from a failure
+everywhere (probe run 62: one failed row for a case that passed on `chromium`). Publishing the
+`Viewport` parameter per result splits that row in two and keeps the run whole (probe run 63:
+`total 5`, `passed 4`, `failed 1`), which is the shape `support/fixtures.ts` now ships and
+`docs/qase.md` records. Two runs, one per project, are therefore unnecessary. **Revisit when** a
+per-viewport run *title* is needed (a mobile-only nightly, say), or when TestOps changes how it groups
+results by parameters.
 
 ## 13. SUT-side pull-request trigger
 
