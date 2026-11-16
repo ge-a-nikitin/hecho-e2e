@@ -47,7 +47,7 @@ Read by `support/env.ts` from the environment or `.env.e2e` (see `.env.e2e.examp
 | `SUT_DIR`              | `../order-desk`             | SUT checkout used by the generators and the build |
 | `BASE_URL`             | `http://127.0.0.1:7200`     | browser origin                                   |
 | `API_URL`              | `${BASE_URL}/api`           | API origin                                       |
-| `E2E_STACK`            | `auto`                      | `auto` / `attach` / `off`                        |
+| `E2E_STACK`            | `auto`                      | `auto` starts or rebuilds, `attach` requires a matching stack, `off` skips checks |
 | `E2E_RESET`            | `run`                       | `run` / `never`                                  |
 | `E2E_ALLOW_REMOTE`     | `0`                         | allow a non-loopback target                      |
 | `E2E_ADMIN_EMAIL`      | `admin@example.test`        | administrator the reset recreates                |
@@ -60,6 +60,35 @@ Read by `support/env.ts` from the environment or `.env.e2e` (see `.env.e2e.examp
 
 Host ports can be moved with `WEB_PORT`, `API_PORT`, `POSTGRES_PORT`, `S3_PORT` and
 `SEAWEEDFS_ADMIN_PORT`; a new web port also needs `E2E_WEB_ORIGIN` and `BASE_URL`.
+
+## What the running stack was built from
+
+The `api` and `web` images are built from `SUT_DIR` and carry that checkout as image labels:
+
+| Label                  | Example   | Meaning                                                                   |
+| ---------------------- | --------- | ------------------------------------------------------------------------- |
+| `org.hecho.sut.commit` | `0db653e` | short `HEAD` of the checkout at build time                                |
+| `org.hecho.sut.state`  | `0db653e` | the commit, or `<commit>+dirty-<sha1>` when the tree had uncommitted work |
+| `org.hecho.sut.dirty`  | `0` / `1` | whether the build included uncommitted work                               |
+
+`pnpm stack:status` reads the labels back and compares them with the checkout:
+
+| Verdict   | When                                                             | `E2E_STACK=auto`  | `E2E_STACK=attach` |
+| --------- | ---------------------------------------------------------------- | ----------------- | ------------------ |
+| `current` | both images carry the state of the checkout                      | run as-is         | run as-is          |
+| `stale`   | a label is missing, names another state, or the image is absent   | rebuild, then run | fail the run       |
+
+`node scripts/stack.mjs status --json` prints the same answer as JSON, and `support/stack.ts` reads
+it: nothing else in the suite decides whether a warm stack matches the checkout. Rebuilding goes
+through `docker compose up --build`, and the API container applies pending migrations on start, so an
+ordinary SUT change needs no `stack:down`.
+
+The suite never moves the checkout: `git -C ../order-desk pull` stays a human step, and a checkout
+behind `origin/main` is reported as a note, not fixed. A checkout that is not a git repository cannot
+be compared with the images, which `status` says out loud instead of rebuilding on every run.
+
+See [0002](../decisions/0002-build-provenance.md) for why the stamp lives on the image rather than in
+a local file.
 
 ## Reset semantics
 

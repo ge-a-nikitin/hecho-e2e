@@ -29,14 +29,39 @@ export async function waitForHealth(timeoutMs = 180_000): Promise<boolean> {
 
 /**
  * Applies E2E_STACK: `auto` starts the compose stack when the API does not
- * answer, `attach` requires an already running one, `off` trusts the operator.
+ * answer and rebuilds it when the running images predate the checkout,
+ * `attach` requires an already running stack that was built from this checkout,
+ * `off` trusts the operator.
  */
 export async function ensureStack(): Promise<void> {
   assertSafeTarget();
 
   if (STACK_MODE === "off") return;
 
-  if (await isHealthy()) return;
+  if (await isHealthy()) {
+    const build = readBuild();
+
+    if (build === undefined) {
+      console.info("[stack] could not read the build provenance of the running stack; using it as-is");
+      return;
+    }
+
+    if (!build.stale) {
+      console.info(`[stack] ${build.reason}`);
+      for (const note of build.notes) console.info(`[stack] ${note}`);
+      return;
+    }
+
+    if (STACK_MODE === "attach") {
+      throw new Error(
+        `${BASE_URL} answers, but ${build.reason}. E2E_STACK=attach forbids rebuilding it: ` +
+          "run `pnpm stack:up` for the checkout under test, or point SUT_DIR at the one the stack was built from.",
+      );
+    }
+
+    await startStack(`[stack] ${build.reason}; rebuilding before the run ...`);
+    return;
+  }
 
   if (STACK_MODE === "attach") {
     throw new Error(
@@ -45,7 +70,38 @@ export async function ensureStack(): Promise<void> {
     );
   }
 
-  console.info(`[stack] ${BASE_URL} is down, starting docker-compose.e2e.yml ...`);
+  await startStack(`[stack] ${BASE_URL} is down, starting docker-compose.e2e.yml ...`);
+}
+
+/**
+ * The shape of `node scripts/stack.mjs status --json`: only the fields this file
+ * acts on. scripts/stack.mjs owns the docker and git calls, so the verdict that
+ * fails a run here is the same one `pnpm stack:status` prints.
+ */
+interface BuildProvenance {
+  readonly stale: boolean;
+  readonly reason: string;
+  readonly notes: readonly string[];
+}
+
+function readBuild(): BuildProvenance | undefined {
+  const result = spawnSync("node", [path.resolve(process.cwd(), "scripts/stack.mjs"), "status", "--json"], {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "inherit"],
+  });
+
+  if (result.status !== 0) return undefined;
+
+  try {
+    return JSON.parse(result.stdout) as BuildProvenance;
+  } catch {
+    return undefined;
+  }
+}
+
+async function startStack(intro: string): Promise<void> {
+  console.info(intro);
   const result = spawnSync("node", [path.resolve(process.cwd(), "scripts/stack.mjs"), "up"], {
     cwd: process.cwd(),
     stdio: "inherit",

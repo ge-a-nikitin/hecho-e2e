@@ -15,6 +15,13 @@ services:
     build:
       context: ${SUT_DIR:-../order-desk}
       dockerfile: apps/web/Dockerfile
+      # Provenance, not decoration: the suite refuses to test a running stack
+      # whose image was built from a different checkout. `pnpm stack:status`
+      # compares the label with SUT_DIR, and `pnpm stack:up` stamps it.
+      labels:
+        org.hecho.sut.commit: ${SUT_COMMIT:-unknown}
+        org.hecho.sut.state: ${SUT_STATE:-unknown}
+        org.hecho.sut.dirty: ${SUT_DIRTY:-unknown}
       args:
         # Same-origin on purpose: the web container proxies /api to the API, so
         # the browser never makes a cross-origin request and CORS stays out of
@@ -31,6 +38,10 @@ services:
     build:
       context: ${SUT_DIR:-../order-desk}
       dockerfile: apps/api/Dockerfile
+      labels:
+        org.hecho.sut.commit: ${SUT_COMMIT:-unknown}
+        org.hecho.sut.state: ${SUT_STATE:-unknown}
+        org.hecho.sut.dirty: ${SUT_DIRTY:-unknown}
     restart: "no"
     environment:
       PORT: 6201
