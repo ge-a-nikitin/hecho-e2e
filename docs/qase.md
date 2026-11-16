@@ -92,6 +92,11 @@ the stored case, so every sync rewrote all seven cases and the drift gate could 
   `QASE_MODE=testops pnpm e2e` — because the environment wins over the file.
 - `main`: `.github/workflows/qase.yml` publishes a run (`QASE_MODE=testops`) and fails when
   `qase:sync:dry` would change anything, which means the catalogue and TestOps drifted.
+- A run triggered from the SUT repository publishes through `.github/workflows/run-suite.yml` with
+  `qase-mode: testops` and a title of the shape `Order Desk web · e2e · <sha>`, tagged `ci,e2e`, so a
+  run caused by a SUT pull request is distinguishable from this repository's own. Its pull-request
+  runs pass `qase-mode: off`: a fork never receives the token, and a pull request must stay green
+  without one.
 - The token is the environment secret `QASE_TESTOPS_API_TOKEN` of the `production` environment
   (Settings → Environments → `production` → Environment secrets). `qase.config.json` already names the
   project (`HECHO`) and the US host, so the workflow sets neither.

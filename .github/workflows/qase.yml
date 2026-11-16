@@ -4,6 +4,13 @@ name: Qase
 # fails when the catalogue in the repository has drifted from the cases there.
 # The token lives in the `production` environment and never reaches a pull
 # request, which is why checks.yml keeps QASE_MODE=off.
+#
+# The stack and suite steps below repeat run-suite.yml on purpose: a job that
+# calls a reusable workflow cannot use `environment`, and moving the token to a
+# repository secret to avoid the repetition would let any branch read it. What
+# the two copies must not diverge in is the assertions — they share the specs,
+# the fixtures and the stack script, which is where a test actually changes.
+# See docs/decisions/0003-reusable-suite-workflow.md.
 on:
   push:
     branches: [main]
