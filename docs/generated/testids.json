@@ -1,7 +1,7 @@
 {
   "generatedBy": "scripts/sut/sync-context.mjs",
   "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
-  "sutRef": "7d9d35f472bae4e3d7fe3226d60b04025ba99ba6",
+  "sutRef": "794c96682edf9b9e9905e60cc48eb381da21c907",
   "counts": {
     "literal": 125,
     "template": 72,

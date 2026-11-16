@@ -1,8 +1,8 @@
 {
   "generatedBy": "scripts/sut/sync-context.mjs",
   "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
-  "sutRef": "7d9d35f472bae4e3d7fe3226d60b04025ba99ba6",
-  "inputsHash": "fdcfc0428204cdbff192cda38f66f4f388db832d12f1d14d19cac620a1763f5f",
+  "sutRef": "794c96682edf9b9e9905e60cc48eb381da21c907",
+  "inputsHash": "46c6af99e7fa11d644d31c56e21ed4e063ba47ba2b252c4566eb23c8dd54082d",
   "inputFiles": [
     "README.en.md",
     "apps/api/prisma/schema.prisma",
