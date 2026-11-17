@@ -40,7 +40,11 @@ P1 is the rest of the agreed functionality; P2 is edge cases and negative paths.
 | Profile         | executor sets the hourly rate                       | change name/email, change password, session revocation                | —                                                  |
 | Access control  | —                                                   | each role cannot reach another role's panel                           | API-level forbidden/not-found behaviour            |
 
-The table is the plan, not the current state: `docs/backlog.md` records what is still missing.
+The table is the plan. What exists today: 65 catalogued cases in twelve spec files — `tests/auth`,
+`tests/orders` (creating, editing, cancelling, lists, the record), `tests/executor`, `tests/estimates`,
+`tests/review`, `tests/invoices`, `tests/admin`, `tests/profile` and `tests/guards`. `docs/backlog.md`
+records what is still missing, and `test-cases-draft/cases.md` records which draft cases were dropped and
+why.
 
 ## Data strategy
 

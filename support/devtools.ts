@@ -45,6 +45,50 @@ export interface SessionUser {
   readonly hourlyRate?: number | string | null;
 }
 
+export interface Estimate {
+  readonly id: string;
+  readonly hours: number | string;
+  readonly amount: number | string;
+  readonly hourlyRate?: number | string;
+  readonly status: EstimateStatus;
+  readonly responseComment?: string | null;
+  readonly proposedAt?: string;
+}
+
+/** A receipt as the order's invoice carries it. */
+export interface PaymentReport {
+  readonly id: string;
+  readonly filename: string;
+  readonly status: PaymentReportStatus;
+  readonly reviewComment?: string | null;
+}
+
+export interface Invoice {
+  readonly id: string;
+  readonly number: string;
+  readonly status: InvoiceStatus;
+  readonly amount?: number | string;
+  readonly paymentReports?: readonly PaymentReport[];
+}
+
+export interface OrderAttachment {
+  readonly id: string;
+  readonly filename: string;
+  readonly sizeBytes?: number;
+  readonly contentType?: string | null;
+}
+
+export interface OrderComment {
+  readonly id: string;
+  readonly content: string;
+  readonly author?: { readonly id: string; readonly name: string };
+}
+
+/**
+ * The order as the API returns it: every relation is included
+ * (`apps/api/src/orders/orders.service.ts:26-45`), which is what lets a case
+ * read an estimate, an invoice or a receipt id without a second endpoint.
+ */
 export interface Order {
   readonly id: string;
   readonly title: string;
@@ -52,12 +96,21 @@ export interface Order {
   readonly status: OrderStatus;
   readonly category?: Category;
   readonly customerId?: string;
+  readonly customer?: { readonly id: string; readonly name: string };
+  readonly executorId?: string | null;
   readonly executor?: { readonly id: string; readonly name: string } | null;
   readonly createdAt: string;
   readonly dueAt: string | null;
   readonly location: string | null;
-  readonly estimates?: readonly { readonly id: string; readonly status: EstimateStatus }[];
-  readonly invoices?: readonly { readonly id: string; readonly status: InvoiceStatus }[];
+  readonly acceptedAt?: string | null;
+  readonly completedAt?: string | null;
+  readonly cancellationReason?: string | null;
+  readonly approvedAmount?: number | string | null;
+  readonly estimates?: readonly Estimate[];
+  readonly invoices?: readonly Invoice[];
+  readonly attachments?: readonly OrderAttachment[];
+  readonly comments?: readonly OrderComment[];
+  readonly timeEntry?: { readonly minutes: number; readonly comment: string | null } | null;
 }
 
 /**

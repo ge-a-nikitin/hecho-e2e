@@ -106,7 +106,37 @@ the request belongs to the SUT repository, and the current assertions hold while
 language. **Revisit when** an `order-status-<id>` id exists: replace the copy assertions in
 `tests/orders/customer-orders.spec.ts`, drop the note from `quirks.md`, and delete this entry.
 
-## 14. `seed()` on the devtools client
+## 15. Reassigning started work has no screen
+
+`POST /orders/:id/assign` accepts a `WAITING_DISTRIBUTION`, an `ASSIGNED` **or an `IN_PROGRESS`** order and
+clears the approved hours, rate and amount when the work already started
+(`apps/api/src/orders/orders.service.ts:229-296`; `docs/sut/domain.md:44-52`). The administrator panel offers
+the control only for the first two (`apps/web/src/role-order-panels.tsx:487-489`), so the one route that
+reassigns started work is a hand-written API call. `admin.orders.reassign` therefore walks the assigned
+case and stops there. **Why deferred:** the missing affordance belongs to the SUT repository, and a case
+that only calls the endpoint would belong to the integration layer, not here. **Revisit when** the panel
+renders the control for `IN_PROGRESS` (or the API stops accepting it): then extend the case to an
+in-progress order and assert the cleared approved amount on the card.
+
+## 16. A stable error surface for a refused upload
+
+`orders.attachment.oversize` was written and dropped: the card refuses a file above 1 MB in the browser
+(`apps/web/src/order-detail.tsx:364`) and reports it through `app-toast`, which is mounted permanently and
+carries no id (`docs/sut/quirks.md`, "A status is copy, not an id" is the same problem). **Why deferred:**
+an assertion on the toast's copy would be the only oracle, and copy is what this suite refuses to depend
+on. **Revisit when** the toast or the refusal message exposes a `data-testid`: assert the refusal, then read
+the order through the API to show that nothing was attached.
+
+## 17. The list behind the order card keeps stale rows
+
+The card is a route rendered over the list (`docs/sut/quirks.md:37-38`), and the list does not refetch when
+the card closes: a cancel or a comment made inside the card is visible in the row only after a reload.
+`orders.cancel.withdraws-estimate` reloads deliberately, and the comment in that case says why. **Why not a
+defect report yet:** nothing documents the intent, and a list that refetched on every close would also
+throw away the filter state. **Revisit** with a decision in `docs/decisions/` (refetch on close versus a
+shared store), then drop the reload from the case.
+
+## 18. `seed()` on the devtools client
 
 `POST /api/devtools/seed` and `DELETE /api/devtools/seed` are documented (`docs/sut/devtools.md:50-67`),
 but `support/devtools.ts` exposes no wrapper: a case that wants "a board with work in every status" has

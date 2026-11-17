@@ -31,8 +31,9 @@ again (`orders.submit.pool-visibility`).
 **The SPA is served for every path.** Deep links work through nginx's `try_files ... /index.html`.
 A 404 page for an unknown panel sub-route comes from the app, not from the server.
 
-**Panel role check.** Opening `/admin` with a customer session redirects to `/login` after the
-session loads. Assert the URL, not the absence of the panel.
+**Panel role check.** Opening `/admin` with a customer session redirects to `/customer` — the panel the
+session owns — and not to the sign-in form; `/login` is what a browser without any session gets. Assert the
+URL, not the absence of the panel (`apps/web/src/app.tsx:323-335`).
 
 **Order card is a route.** `/<panel>/orders/<id>` renders the card over the list; closing it
 navigates back. Screenshots of the card on mobile show a bottom sheet, not a dialog.
@@ -49,6 +50,20 @@ orders, page one shows ten and page two shows one; the API has no paging paramet
 ("Create and send") creates it *and* submits it, so the order arrives in `WAITING_DISTRIBUTION`
 (`ASSIGNED` when the form already names an executor). Both are a single request: there is no
 intermediate draft to observe.
+
+**A rejected estimate returns the order to the pool.** Answering a proposal with a rejection records the
+comment, sets the estimate to `REJECTED`, **releases the executor** and moves the order back to
+`WAITING_DISTRIBUTION` (`apps/api/src/orders/orders.service.ts:432-492`). Only an acceptance keeps the
+executor and starts the work. A case that expects a rejected order to stay with its executor is testing a
+product that does not exist.
+
+**A cancelled order keeps its executor.** Cancelling ends the active assignment and withdraws an estimate
+awaiting an answer, but `executorId` stays on the order, so the order still appears in that executor's list
+— without a single action, because the status offers none.
+
+**The list behind the order card is not refreshed by the card.** The card is a route rendered over the
+list, and the list does not re-read its orders when the card closes: a change made inside the card (a
+cancel, a comment that changes a status) shows in the row only after a reload.
 
 **A status is copy, not an id.** Rows and cards render a localised label and the snapshot holds no
 `order-status*` id: `NEW` reads "Draft", `WAITING_DISTRIBUTION` reads "Awaiting distribution",

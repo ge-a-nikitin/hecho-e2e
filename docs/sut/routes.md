@@ -26,8 +26,9 @@ Inside a panel (`<panel>` is `/customer`, `/executor` or `/admin`):
 | `/admin/categories`      | categories (administrator only)                |
 | `/admin/users`           | accounts (administrator only)                  |
 
-A panel route with the wrong session role redirects to `/login`; a signed-in user who opens the
-landing page sees a link to their own panel instead of sign-in.
+A panel route with the wrong session role sends the visitor to the panel their session owns; only a browser
+without a session is sent to `/login`. A signed-in user who opens the landing page sees a link to their own
+panel instead of sign-in.
 
 ## Test ids by area
 
