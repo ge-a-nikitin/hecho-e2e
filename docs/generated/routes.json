@@ -1,7 +1,7 @@
 {
   "generatedBy": "scripts/sut/sync-context.mjs",
   "repository": "https://github.com/ge-a-nikitin/hecho-demo.git",
-  "sutRef": "794c96682edf9b9e9905e60cc48eb381da21c907",
+  "sutRef": "89da989790309563a3d9b650cc48a30c95611c31",
   "routes": [
     {
       "path": "/",
