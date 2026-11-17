@@ -129,8 +129,9 @@ The `setup` project is preparation rather than a case — it imports `@playwrigh
 calls `qc()` — so its three executions used to reach TestOps as auto-created cases with no catalogue
 entry, which read as product cases nobody owns. They now call `qase.ignore()`
 (`tests/setup/auth.setup.ts`): still executed, never reported. The shape of a full run is therefore
-`<cases> × 2` rows, which is what the catalogue holds — 65 cases and 133 executions at the time of
-writing. The history of the measurement, taken while the catalogue held seven cases:
+`<cases> × 2` rows, which is what the catalogue holds — 65 cases and 130 executions in run 77, the first
+run after the catalogue reached that size. The history of the measurement, taken while the catalogue
+held seven cases:
 
 | Suite state                      | Run | TestOps stored |
 | -------------------------------- | --- | -------------- |
