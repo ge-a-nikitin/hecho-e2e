@@ -46,7 +46,10 @@ assignments, time entries, comments, attachments and invoices.
 The administrator may reassign an order. Reassignment returns the order to `ASSIGNED` with the
 approved hours, rate and amount cleared, because the new executor has their own rate and proposes a
 new estimate; previously recorded time stays on the order, and the history keeps the previous
-assignment.
+assignment. A proposal still waiting for an answer is withdrawn, so the new executor prices the work
+from scratch. The endpoint accepts a waiting, an assigned or an in-progress order, but the panel only
+offers the control for a waiting or assigned one — reassigning started work is API-only today
+(`docs/backlog.md`).
 
 ## Cancellation
 
@@ -55,7 +58,8 @@ assignment.
 - After an invoice is issued: cancellation is impossible. An unpaid invoice is voided with a reason
   and a new one can be issued; a paid invoice is immutable.
 - Cancelling ends the active assignment and withdraws an estimate still awaiting the customer's
-  answer, so a cancelled order never carries a half-finished assignment.
+  answer, so a cancelled order never carries a half-finished assignment. The order keeps its
+  `executorId`, which is why it stays in that executor's list without a single action.
 
 ## Invoices and payment reports
 

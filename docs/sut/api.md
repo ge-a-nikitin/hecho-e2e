@@ -58,9 +58,13 @@ sees only their own orders, an executor only theirs plus the pool).
 - Validation is strict: unknown body fields, unknown enum values and malformed ids are `400`. The
   DTOs use `class-validator`, and the global pipe runs with `whitelist` and `forbidNonWhitelisted`,
   so a stray field is an error rather than being ignored.
-- `401` means no session (or a revoked one), `403` means the role or the ownership rule rejects the
-  actor, `404` means the entity does not exist **or** the caller may not see it, `409` means a state
-  conflict (for example a duplicate category name or an account that already exists).
+- `401` means no session (or a revoked one, or a deactivated account), `403` means the role or the
+  ownership rule rejects the actor, `409` means a state conflict (for example a duplicate category name, an
+  account that already exists, or an action on an order whose status does not allow it). `404` means the
+  entity does not exist — or that the caller may not see it and the handler chooses not to say so. An actor
+  reading an order that belongs to somebody else gets `403` from `GET /orders/:id`
+  (`apps/api/src/orders/orders.service.ts:109-116`), so a case must assert the handler's own answer rather
+  than one code for "not yours".
 - Errors come back as a JSON object with `statusCode`, `message` and `error`; `message` can be a
   string or an array of validation messages.
 

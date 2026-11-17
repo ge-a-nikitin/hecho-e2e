@@ -7,7 +7,7 @@ maps each status to the action that produces it; the endpoints are the ones in
 | Status                | Meaning                                                      | Produced by                                                        |
 | --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------ |
 | `NEW`                 | customer draft, still editable                                | `POST /orders` (create), `PATCH /orders/:id` (edit draft)           |
-| `WAITING_DISTRIBUTION`| submitted without an executor, open to the pool               | `POST /orders/:id/submit`; also where a declined assignment returns  |
+| `WAITING_DISTRIBUTION`| submitted without an executor, open to the pool               | `POST /orders/:id/submit`; also where a declined assignment or a rejected estimate returns |
 | `ASSIGNED`            | one executor owns it, waiting for an accepted estimate        | `POST /orders/:id/submit` with an executor, `POST /orders/:id/claim`, `POST /orders/:id/assign` |
 | `IN_PROGRESS`         | estimate accepted, work underway                              | customer accepts the estimate (`POST /orders/:id/estimates/:estimateId/respond`); executor resumes revisions (`POST /orders/:id/resume-revisions`) |
 | `ON_REVIEW`           | executor submitted the result                                 | `POST /orders/:id/submit-review`                                    |
@@ -24,6 +24,7 @@ NEW ──submit (no executor)──▶ WAITING_DISTRIBUTION ──claim / assig
  │                                  ▲                                     │
  └──submit (executor chosen)───────┼─────────────────────────────────────┘
                                     │ decline (executor)
+                                    │ reject estimate (customer)
                                     │
 ASSIGNED ──estimate accepted──▶ IN_PROGRESS ──submit-review──▶ ON_REVIEW
    ▲                                  ▲                            │
@@ -40,7 +41,9 @@ Notes that decide test design:
   moves to `INVOICE_ISSUED` when the invoice is issued. A test that expects a status change right
   after "accept work" is testing a product that does not exist.
 - The estimate must be accepted before work starts; `IN_PROGRESS` is unreachable from `ASSIGNED`
-  without it.
+  without it. A rejection goes the other way: it releases the executor and returns the order to
+  `WAITING_DISTRIBUTION` with the estimate recorded as `REJECTED` and the customer's comment attached
+  (`apps/api/src/orders/orders.service.ts:432-492`).
 - `CANCELLED` is reachable from any pre-invoice status by the right role: customer or administrator
   before work starts, administrator only afterwards and only with a reason.
 - Voiding an unpaid invoice takes the order out of `INVOICE_ISSUED` and allows a new invoice; a paid
